@@ -2,8 +2,8 @@ version: "3.1"
 
 services:
 
-  web_dev:
-    image: gobuffalo/buffalo:v0.13.10
+  dev:
+    image: gobuffalo/buffalo:v0.13.12
     ports:
       - "3000:3000"
     depends_on:
@@ -18,6 +18,8 @@ services:
   db:
     image: postgres:11-alpine
     restart: always
+    ports:
+      - "5432:5432"
     environment:
       POSTGRES_USER: schutzstreifen
       POSTGRES_PASSWORD: schutzstreifen

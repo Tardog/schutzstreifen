@@ -1,0 +1,11 @@
+version: "3.1"
+
+services:
+
+  build:
+    image: gobuffalo/buffalo:v0.13.12
+    depends_on:
+      - db
+    volumes:
+      - .:/go/src/github.com/tardog/schutzstreifen
+    working_dir: /go/src/github.com/tardog/schutzstreifen

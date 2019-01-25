@@ -9,12 +9,9 @@ start:
 stop:
 	docker-compose -p $(PROJECT) down
 
-build:
-	docker-compose -p $(PROJECT) build
-
 test:
-	buffalo db drop -e test
-	buffalo test
+	-docker-compose -p $(PROJECT) -f docker-compose.yml -f docker-compose.build.yml run --rm build buffalo test
+	docker-compose -p $(PROJECT) down
 
 css:
 	sassc -t compressed public/assets/scss/application.scss public/assets/application.css

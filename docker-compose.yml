@@ -2,14 +2,18 @@ version: "3.1"
 
 services:
 
-  web:
-    build: .
+  web_dev:
+    image: gobuffalo/buffalo:v0.13.10
     ports:
-      - '3000:3000'
+      - "3000:3000"
     depends_on:
       - db
-    links:
-      - db:postgres
+    volumes:
+      - .:/go/src/github.com/tardog/schutzstreifen
+    entrypoint: buffalo dev
+    working_dir: /go/src/github.com/tardog/schutzstreifen
+    environment:
+      - ADDR=0.0.0.0
 
   db:
     image: postgres:11-alpine

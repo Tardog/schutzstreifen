@@ -3,7 +3,7 @@ development:
   database: schutzstreifen
   user: schutzstreifen
   password: schutzstreifen
-  host: postgres
+  host: db
   pool: 5
 
 test:

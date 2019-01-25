@@ -15,3 +15,6 @@ build:
 test:
 	buffalo db drop -e test
 	buffalo test
+
+css:
+	sassc -t compressed public/assets/scss/application.scss public/assets/application.css

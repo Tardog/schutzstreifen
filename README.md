@@ -1,2 +1,4 @@
 # Schutzstreifen
-Built with the (https://gobuffalo.io)[Buffalo framework].
+Built with the [Buffalo framework](https://gobuffalo.io).
+
+Work in progress.

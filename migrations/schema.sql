@@ -34,6 +34,21 @@ SET default_tablespace = '';
 SET default_with_oids = false;
 
 --
+-- Name: hazard_types; Type: TABLE; Schema: public; Owner: schutzstreifen
+--
+
+CREATE TABLE public.hazard_types (
+    id uuid NOT NULL,
+    label character varying(255) NOT NULL,
+    description character varying(255) NOT NULL,
+    created_at timestamp with time zone DEFAULT CURRENT_TIMESTAMP,
+    updated_at timestamp with time zone DEFAULT CURRENT_TIMESTAMP
+);
+
+
+ALTER TABLE public.hazard_types OWNER TO schutzstreifen;
+
+--
 -- Name: hazards; Type: TABLE; Schema: public; Owner: schutzstreifen
 --
 
@@ -44,6 +59,7 @@ CREATE TABLE public.hazards (
     location public.geography(Point,4326) NOT NULL,
     visible boolean DEFAULT true,
     user_id uuid NOT NULL,
+    hazard_type uuid NOT NULL,
     created_at timestamp with time zone DEFAULT CURRENT_TIMESTAMP,
     updated_at timestamp with time zone DEFAULT CURRENT_TIMESTAMP
 );
@@ -77,6 +93,14 @@ CREATE TABLE public.users (
 
 
 ALTER TABLE public.users OWNER TO schutzstreifen;
+
+--
+-- Name: hazard_types hazard_types_pkey; Type: CONSTRAINT; Schema: public; Owner: schutzstreifen
+--
+
+ALTER TABLE ONLY public.hazard_types
+    ADD CONSTRAINT hazard_types_pkey PRIMARY KEY (id);
+
 
 --
 -- Name: hazards hazards_pkey; Type: CONSTRAINT; Schema: public; Owner: schutzstreifen
@@ -115,6 +139,14 @@ ALTER TABLE ONLY public.users
 --
 
 CREATE UNIQUE INDEX schema_migration_version_idx ON public.schema_migration USING btree (version);
+
+
+--
+-- Name: hazards hazards_hazard_type_fkey; Type: FK CONSTRAINT; Schema: public; Owner: schutzstreifen
+--
+
+ALTER TABLE ONLY public.hazards
+    ADD CONSTRAINT hazards_hazard_type_fkey FOREIGN KEY (hazard_type) REFERENCES public.hazard_types(id);
 
 
 --

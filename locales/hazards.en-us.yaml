@@ -1,0 +1,6 @@
+- id: "hazard.created.success"
+  translation: "Hazard was successfully created."
+- id: "hazard.updated.success"
+  translation: "Hazard was successfully updated."
+- id: "hazard.destroyed.success"
+  translation: "Hazard was successfully destroyed."

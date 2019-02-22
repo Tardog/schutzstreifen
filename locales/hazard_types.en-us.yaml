@@ -1,0 +1,6 @@
+- id: "hazard_type.created.success"
+  translation: "HazardType was successfully created."
+- id: "hazard_type.updated.success"
+  translation: "HazardType was successfully updated."
+- id: "hazard_type.destroyed.success"
+  translation: "HazardType was successfully destroyed."

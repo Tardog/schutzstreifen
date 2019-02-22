@@ -1,0 +1,8 @@
+<div class="page-header">
+  <h1>Edit HazardType</h1>
+</div>
+
+<%= form_for(hazardType, {action: hazardTypePath({ hazard_type_id: hazardType.ID }), method: "PUT"}) { %>
+  <%= partial("hazard_types/form.html") %>
+  <a href="<%= hazardTypePath({ hazard_type_id: hazardType.ID }) %>" class="btn btn-warning" data-confirm="Are you sure?">Cancel</a>
+<% } %>

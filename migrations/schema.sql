@@ -43,7 +43,7 @@ CREATE TABLE public.hazards (
     description character varying(255) NOT NULL,
     location public.geography(Point,4326) NOT NULL,
     visible boolean DEFAULT true,
-    user_id uuid,
+    user_id uuid NOT NULL,
     created_at timestamp with time zone DEFAULT CURRENT_TIMESTAMP,
     updated_at timestamp with time zone DEFAULT CURRENT_TIMESTAMP
 );

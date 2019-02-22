@@ -16,7 +16,7 @@ services:
       - ADDR=0.0.0.0
 
   db:
-    image: postgres:11-alpine
+    build: ./docker/build/db
     restart: always
     ports:
       - "22543:5432"

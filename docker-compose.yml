@@ -3,7 +3,7 @@ version: "3.1"
 services:
 
   dev:
-    image: gobuffalo/buffalo:v0.13.12
+    build: ./docker/build/gobuffalo
     ports:
       - "22080:3000"
     depends_on:

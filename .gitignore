@@ -7,7 +7,7 @@ tmp/
 node_modules/
 .sass-cache/
 *-packr.go
-public/assets/
+public/assets/application.css
 schutzstreifen
 .vscode/
 .grifter/

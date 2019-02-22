@@ -59,7 +59,7 @@ CREATE TABLE public.hazards (
     location public.geography(Point,4326) NOT NULL,
     visible boolean DEFAULT true,
     user_id uuid NOT NULL,
-    hazard_type uuid NOT NULL,
+    hazard_type_id uuid NOT NULL,
     created_at timestamp with time zone DEFAULT CURRENT_TIMESTAMP,
     updated_at timestamp with time zone DEFAULT CURRENT_TIMESTAMP
 );
@@ -142,11 +142,11 @@ CREATE UNIQUE INDEX schema_migration_version_idx ON public.schema_migration USIN
 
 
 --
--- Name: hazards hazards_hazard_type_fkey; Type: FK CONSTRAINT; Schema: public; Owner: schutzstreifen
+-- Name: hazards hazards_hazard_type_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: schutzstreifen
 --
 
 ALTER TABLE ONLY public.hazards
-    ADD CONSTRAINT hazards_hazard_type_fkey FOREIGN KEY (hazard_type) REFERENCES public.hazard_types(id);
+    ADD CONSTRAINT hazards_hazard_type_id_fkey FOREIGN KEY (hazard_type_id) REFERENCES public.hazard_types(id);
 
 
 --

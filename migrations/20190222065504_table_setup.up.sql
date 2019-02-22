@@ -24,7 +24,7 @@ CREATE TABLE hazards (
     location GEOGRAPHY(Point) NOT NULL,
     visible BOOLEAN DEFAULT true,
     user_id UUID NOT NULL REFERENCES users(id),
-    hazard_type UUID NOT NULL REFERENCES hazard_types(id),
+    hazard_type_id UUID NOT NULL REFERENCES hazard_types(id),
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );

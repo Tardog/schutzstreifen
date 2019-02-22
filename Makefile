@@ -2,7 +2,8 @@ PROJECT=schutzstreifen
 
 install:
 	buffalo db create -a
-	buffalo db migrate up
+	buffalo db reset
+	sassc -t compressed public/assets/scss/application.scss public/assets/application.css
 
 start:
 	docker-compose -p $(PROJECT) -f docker-compose.yml up -d

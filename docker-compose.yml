@@ -1,4 +1,4 @@
-version: "3.1"
+version: "3"
 
 services:
 
@@ -9,7 +9,8 @@ services:
     depends_on:
       - db
     volumes:
-      - .:/go/src/github.com/tardog/schutzstreifen
+      - .:/go/src/github.com/tardog/schutzstreifen:delegated
+      - ./docker/volumes/postgresql:/var/lib/postgresql/data:delegated
     entrypoint: buffalo dev
     working_dir: /go/src/github.com/tardog/schutzstreifen
     environment:

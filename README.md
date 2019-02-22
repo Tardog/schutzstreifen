@@ -14,8 +14,8 @@ make stop
 ```
 When all containers are up, the application is available at http://localhost:22080/
 
-## Database setup
-This will create the database "schutzstreifen" and run all ```up``` migrations.
+## Installation
+This will set up the database and generate CSS.
 ```
 make install
 ```

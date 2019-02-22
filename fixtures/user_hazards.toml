@@ -1,0 +1,36 @@
+[[scenario]]
+name = "user account with several hazards"
+
+  [[scenario.table]]
+    name = "users"
+
+    [[scenario.table.row]]
+      id = "<%= uuidNamed("carol") %>"
+      name = "Carol Danvers"
+      email = "captain@marvel.dev"
+      password = "foobar"
+      created_at = "<%= now() %>"
+      updated_at = "<%= now() %>"
+
+  [[scenario.table]]
+    name = "hazards"
+
+    [[scenario.table.row]]
+      id = "<%= uuid() %>"
+      label = "Collision"
+      description = "Watch out!"
+      location = "POINT(2.5559 49.0083)"
+      visible = true
+      user_id = "<%= uuidNamed("carol") %>"
+      created_at = "<%= now() %>"
+      updated_at = "<%= now() %>"
+
+    [[scenario.table.row]]
+      id = "<%= uuid() %>"
+      label = "Danger danger"
+      description = "High voltage"
+      location = "POINT(2.5559 49.0083)"
+      visible = true
+      user_id = "<%= uuidNamed("carol") %>"
+      created_at = "<%= now() %>"
+      updated_at = "<%= now() %>"

@@ -48,6 +48,20 @@ func (u *User) ValidateCreate(tx *pop.Connection) (*validate.Errors, error) {
 	return errors, nil
 }
 
+func (u *User) ValidateUpdate(tx *pop.Connection) (*validate.Errors, error) {
+	errors := validate.NewErrors()
+
+	if "" == u.Name {
+		errors.Add("name", "Name cannot be empty")
+	}
+
+	if "" == u.Email {
+		errors.Add("email", "Email cannot be empty")
+	}
+
+	return errors, nil
+}
+
 func (u *User) BeforeCreate(tx *pop.Connection) error {
 	hash, err := bcrypt.GenerateFromPassword([]byte(u.Password), bcrypt.DefaultCost)
 	if err != nil {

@@ -1,5 +1,5 @@
 [[scenario]]
-name = "user account with several hazards"
+name = "user with hazards"
 
   [[scenario.table]]
     name = "users"

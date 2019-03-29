@@ -1,0 +1,21 @@
+[[scenario]]
+name = "users"
+
+  [[scenario.table]]
+    name = "users"
+
+    [[scenario.table.row]]
+      id = "afd08b38-7b5d-4ca4-919d-2ec2f358c187"
+      name = "Carol Danvers"
+      email = "captain.marvel@babymarkt.de"
+      password = "foobar"
+      created_at = "<%= now() %>"
+      updated_at = "<%= now() %>"
+
+    [[scenario.table.row]]
+      id = "d50dda02-f887-42dc-97e0-c33350767ce6"
+      name = "King T'Challa"
+      email = "black.panther@babymarkt.de"
+      password = "barfoo"
+      created_at = "<%= now() %>"
+      updated_at = "<%= now() %>"

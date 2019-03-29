@@ -16,6 +16,7 @@ func (as *ActionSuite) Test_UsersResource_New() {
 	as.Equal(200, res.Code)
 }
 
+// Test that a user is created with the values submitted by POST
 func (as *ActionSuite) Test_UsersResource_Create() {
 	name := "foobar"
 	email := "foo@baz.bar"
@@ -32,18 +33,17 @@ func (as *ActionSuite) Test_UsersResource_Create() {
 
 	newUser := &models.User{}
 
-	// Read the first user from the DB
 	err := as.DB.First(newUser)
 	as.NoError(err)
 
-	// Assert that the created user has the expected values
 	as.NotZero(newUser.ID)
 	as.Equal(name, newUser.Name)
 	as.Equal(email, newUser.Email)
-	as.Equal(password, newUser.Password)
+	as.NotZero(newUser.PasswordHash)
 }
 
-func (as *ActionSuite) Test_UsersResource_Create_ValidateEmptyInput() {
+// Test that empty values are rejected
+func (as *ActionSuite) Test_UsersResource_Create_Validation() {
 	user := &models.User{
 		Name:     "",
 		Email:    "",

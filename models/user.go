@@ -4,7 +4,9 @@ import (
 	"encoding/json"
 	"time"
 
+	"github.com/gobuffalo/pop"
 	"github.com/gobuffalo/uuid"
+	"github.com/gobuffalo/validate"
 )
 
 // User represents an authenticated user account
@@ -23,4 +25,22 @@ type Users []User
 func (u Users) String() string {
 	ju, _ := json.Marshal(u)
 	return string(ju)
+}
+
+func (u *User) ValidateCreate(tx *pop.Connection) (*validate.Errors, error) {
+	errors := validate.NewErrors()
+
+	if "" == u.Name {
+		errors.Add("name", "Name cannot be empty")
+	}
+
+	if "" == u.Email {
+		errors.Add("email", "Email cannot be empty")
+	}
+
+	if "" == u.Password {
+		errors.Add("password", "Password cannot be empty")
+	}
+
+	return errors, nil
 }

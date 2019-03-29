@@ -41,6 +41,20 @@ func (as *ActionSuite) Test_UsersResource_Create() {
 	as.Equal(password, user.Password)
 }
 
+func (as *ActionSuite) Test_UsersResource_Create_ValidateEmptyInput() {
+	user := &models.User{
+		Name:     "",
+		Email:    "",
+		Password: "",
+	}
+
+	res := as.HTML("/users").Post(user)
+	as.Equal(422, res.Code)
+
+	err := as.DB.First(user)
+	as.Error(err)
+}
+
 func (as *ActionSuite) Test_UsersResource_Edit() {
 }
 

@@ -101,7 +101,7 @@ func (v UsersResource) Create(c buffalo.Context) error {
 
 	if verrs.HasAny() {
 		// Make the errors available inside the html template
-		c.Set("errors", verrs)
+		c.Set("errors", verrs.Errors)
 
 		// Render again the new.html template that the user can
 		// correct the input.

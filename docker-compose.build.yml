@@ -1,7 +1,6 @@
 version: "3"
 
 services:
-
   build:
     build: ./docker/build/gobuffalo
     depends_on:
@@ -10,3 +9,9 @@ services:
       - .:/go/src/github.com/tardog/schutzstreifen:delegated
       - ./docker/volumes/postgresql:/var/lib/postgresql/data:delegated
     working_dir: /go/src/github.com/tardog/schutzstreifen
+
+  db:
+    build: ./docker/build/db
+    environment:
+      POSTGRES_USER: schutzstreifen
+      POSTGRES_PASSWORD: schutzstreifen

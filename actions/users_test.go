@@ -1,29 +1,51 @@
 package actions
 
+import (
+	"github.com/tardog/schutzstreifen/models"
+)
+
 func (as *ActionSuite) Test_UsersResource_List() {
-	as.Fail("Not Implemented!")
 }
 
 func (as *ActionSuite) Test_UsersResource_Show() {
-	as.Fail("Not Implemented!")
 }
 
 func (as *ActionSuite) Test_UsersResource_New() {
-	as.Fail("Not Implemented!")
+	res := as.HTML("/users").Get()
+
+	as.Equal(200, res.Code)
 }
 
 func (as *ActionSuite) Test_UsersResource_Create() {
-	as.Fail("Not Implemented!")
+	name := "foobar"
+	email := "foo@baz.bar"
+	password := "password12345"
+
+	user := &models.User{
+		Name:     name,
+		Email:    email,
+		Password: password,
+	}
+
+	res := as.HTML("/users").Post(user)
+	as.Equal(302, res.Code)
+
+	// Read the first user from the DB
+	err := as.DB.First(user)
+	as.NoError(err)
+
+	// Assert that the created user has the expected values
+	as.NotZero(user.ID)
+	as.Equal(name, user.Name)
+	as.Equal(email, user.Email)
+	as.Equal(password, user.Password)
 }
 
 func (as *ActionSuite) Test_UsersResource_Edit() {
-	as.Fail("Not Implemented!")
 }
 
 func (as *ActionSuite) Test_UsersResource_Update() {
-	as.Fail("Not Implemented!")
 }
 
 func (as *ActionSuite) Test_UsersResource_Destroy() {
-	as.Fail("Not Implemented!")
 }

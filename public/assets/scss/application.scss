@@ -4,23 +4,29 @@ body, html {
 
 #main-map {
     height: 100vh;
-    width: 100vw;
+}
+
+.topbar {
+    align-items: center;
+    background:rgba(20,20,20,0.85);
+    color: #eeeeee;
+    display: flex;
+    padding: 1rem 1.5rem;
+
+    a {
+        color: #fff;
+        text-decoration: none;
+    }
 }
 
 .branding {
-    background:rgba(20,20,20,0.85);
-    color: #eeeeee;
-    padding: 1rem 1.5rem;
-    width: 100vw;
+    flex: 2 0;
+    margin: 0;
+}
 
-    h1 {
-        margin: 0;
-
-        a {
-            color: #fff;
-            text-decoration: none;
-        }
-    }
+.auth {
+    flex: 1 0;
+    text-align: right;
 }
 
 .main-content {

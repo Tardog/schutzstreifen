@@ -12,8 +12,18 @@
     <script src="https://unpkg.com/leaflet@1.4.0/dist/leaflet.js" integrity="sha512-QVftwZFqvtRNi0ZyCtsznlKSWOStnDORoefr1enyq5mVL4tmKB3S/EnC3rRJcxCPavG10IcrVGSmPh6Qw5lwrg==" crossorigin=""></script>
   </head>
   <body>
-    <header class="branding">
-      <h1><a href="/">Schutzstreifen</a></h1>
+    <header class="topbar">
+      <h1 class="branding"><a href="/">Schutzstreifen</a></h1>
+
+      <div class="auth">
+          <%= if (current_user) { %>
+            <h1><%= current_user.Email %></h1>
+            <a href="/logout" data-method="delete">abmelden</a>
+          <% } else { %>
+            <a href="/login" class="btn btn-primary">anmelden</a>
+            <a href="/users/new" class="btn btn-success">registrieren</a>
+          <% } %>
+      </div>
     </header>
     <%= yield %>
     <%= javascriptTag("application.js") %>

@@ -110,11 +110,10 @@ func (v UsersResource) Create(c buffalo.Context) error {
 		return c.Render(422, r.Auto(c, user))
 	}
 
-	// If there are no errors set a success message
-	c.Flash().Add("success", "User was created successfully")
+	c.Session().Set("current_user_id", user.ID)
+	c.Flash().Add("success", "Welcome to Schutzstreifen!")
 
-	// and redirect to the users index page
-	return c.Render(201, r.Auto(c, user))
+	return c.Redirect(302, "/")
 }
 
 // Edit renders a edit form for a User. This function is
@@ -206,4 +205,39 @@ func (v UsersResource) Destroy(c buffalo.Context) error {
 
 	// Redirect to the users index page
 	return c.Render(200, r.Auto(c, user))
+}
+
+// Authorize require a user be logged in before accessing a route
+func Authorize(next buffalo.Handler) buffalo.Handler {
+	return func(c buffalo.Context) error {
+		if uid := c.Session().Get("current_user_id"); uid == nil {
+			c.Session().Set("redirectURL", c.Request().URL.String())
+
+			err := c.Session().Save()
+			if err != nil {
+				return errors.WithStack(err)
+			}
+
+			c.Flash().Add("danger", "You must be authorized to see that page")
+			return c.Redirect(302, "/")
+		}
+		return next(c)
+	}
+}
+
+// SetCurrentUser attempts to find a user based on the current_user_id
+// in the session. If one is found it is set on the context.
+func SetCurrentUser(next buffalo.Handler) buffalo.Handler {
+	return func(c buffalo.Context) error {
+		if uid := c.Session().Get("current_user_id"); uid != nil {
+			u := &models.User{}
+			tx := c.Value("tx").(*pop.Connection)
+			err := tx.Find(u, uid)
+			if err != nil {
+				return errors.WithStack(err)
+			}
+			c.Set("current_user", u)
+		}
+		return next(c)
+	}
 }

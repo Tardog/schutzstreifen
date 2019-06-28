@@ -58,11 +58,23 @@ func App() *buffalo.App {
 		// Setup and use translations:
 		app.Use(translations())
 
+		app.Use(SetCurrentUser)
+		app.Use(Authorize)
+
 		app.GET("/", HomeHandler)
 
 		app.Resource("/users", UsersResource{})
 		app.Resource("/hazards", HazardsResource{})
 		app.Resource("/hazard_types", HazardTypesResource{})
+
+		app.GET("/login", AuthNew)
+		app.POST("/login", AuthCreate)
+		app.DELETE("/logout", AuthDestroy)
+
+		usersRes := UsersResource{}
+
+		// Routes not requiring login
+		app.Middleware.Skip(Authorize, HomeHandler, usersRes.New, usersRes.Create, AuthNew, AuthCreate)
 
 		app.ServeFiles("/", assetsBox) // serve files from the public directory
 	}

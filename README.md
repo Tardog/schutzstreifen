@@ -14,6 +14,9 @@ make stop
 ```
 When all containers are up, the application is available at http://localhost:22080/
 
+### Display container log output
+With the default ```start``` target, containers are started in detached mode. If you prefer running them in the foreground, use the ```make start-dev``` target instead.
+
 ## Installation
 This will set up the database and generate CSS.
 ```
@@ -34,11 +37,17 @@ make cli
 ## Force rebuilding containers
 This will skip the Docker build cache.
 ```
-make build
+make build-containers
 ```
 
 ## Compile CSS
 Create CSS files from Sass sources:
 ```
 make css
+```
+
+## Run database migrations
+Execute all migrations (only works if the database already exists).
+```
+make migrate
 ```

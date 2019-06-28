@@ -1,37 +1,41 @@
 project = schutzstreifen
-buffalo_exec = docker-compose -p $(project) -f docker-compose.build.yml run --rm build buffalo
+buffalo_compose = docker-compose -p $(project) -f docker-compose.yml
+buffalo_run = $(buffalo_compose) run --rm build
 buffalo_env ?= development
 
 install: create-db migrate compile-css
 
 create-db:
-	$(buffalo_exec) pop create -e $(buffalo_env)
+	$(buffalo_run) pop create -e $(buffalo_env)
 
 reset-db:
-	$(buffalo_exec) pop reset -e $(buffalo_env)
+	$(buffalo_run) pop reset -e $(buffalo_env)
 
 drop-db:
-	$(buffalo_exec) pop drop -e $(buffalo_env)
+	$(buffalo_run) pop drop -e $(buffalo_env)
 
 migrate:
-	$(buffalo_exec) pop migrate -e $(buffalo_env)
+	$(buffalo_run) pop migrate -e $(buffalo_env)
 
 start:
-	docker-compose -p $(project) -f docker-compose.yml up -d
+	$(buffalo_compose) up app -d
+
+start-dev:
+	$(buffalo_compose) up app
 
 stop:
-	docker-compose -p $(project) -f docker-compose.yml down
+	$(buffalo_compose) down
 
 restart: stop start
 
 build-containers:
-	docker-compose -p $(project) -f docker-compose.yml -f docker-compose.build.yml build --no-cache
+	$(buffalo_compose) -f docker-compose.yml build --no-cache
 
 test:
-	-$(buffalo_exec) test
+	-$(buffalo_run) test
 
-compile-css:
+css:
 	sassc -t compressed public/assets/scss/application.scss public/assets/application.css
 
 cli:
-	docker-compose -p $(project) -f docker-compose.yml exec dev bash
+	$(buffalo_compose) exec dev bash

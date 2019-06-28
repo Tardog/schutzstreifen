@@ -25,7 +25,7 @@ stop:
 restart: stop start
 
 build-containers:
-	docker-compose -p $(project) -f docker-compose.yml build --no-cache
+	docker-compose -p $(project) -f docker-compose.yml -f docker-compose.build.yml build --no-cache
 
 test:
 	-$(buffalo_exec) test

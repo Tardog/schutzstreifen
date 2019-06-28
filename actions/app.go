@@ -10,7 +10,7 @@ import (
 	"github.com/gobuffalo/buffalo-pop/pop/popmw"
 	csrf "github.com/gobuffalo/mw-csrf"
 	i18n "github.com/gobuffalo/mw-i18n"
-	"github.com/gobuffalo/packr"
+	"github.com/gobuffalo/packr/v2"
 	"github.com/tardog/schutzstreifen/models"
 )
 
@@ -63,6 +63,7 @@ func App() *buffalo.App {
 		app.Resource("/users", UsersResource{})
 		app.Resource("/hazards", HazardsResource{})
 		app.Resource("/hazard_types", HazardTypesResource{})
+
 		app.ServeFiles("/", assetsBox) // serve files from the public directory
 	}
 
@@ -75,7 +76,7 @@ func App() *buffalo.App {
 // for more information: https://gobuffalo.io/en/docs/localization
 func translations() buffalo.MiddlewareFunc {
 	var err error
-	if T, err = i18n.New(packr.NewBox("../locales"), "en-US"); err != nil {
+	if T, err = i18n.New(packr.New("app:locales", "../locales"), "en-US"); err != nil {
 		app.Stop(err)
 	}
 	return T.Middleware()

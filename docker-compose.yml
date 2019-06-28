@@ -2,22 +2,20 @@ version: "3"
 
 services:
 
-  dev:
-    build: ./docker/build/gobuffalo
+  app:
+    build: ./docker/images/app
     ports:
       - "22080:3000"
     depends_on:
       - db
     volumes:
-      - .:/go/src/github.com/tardog/schutzstreifen:delegated
-      - ./docker/volumes/postgresql:/var/lib/postgresql/data:delegated
-    entrypoint: buffalo dev
-    working_dir: /go/src/github.com/tardog/schutzstreifen
+      - .:/go/src/github.com/tardog/schutzstreifen
+      - ./docker/volumes/db/:/var/lib/postgresql/data
     environment:
       - ADDR=0.0.0.0
 
   db:
-    build: ./docker/build/db
+    build: ./docker/images/db
     restart: always
     ports:
       - "22543:5432"

@@ -9,10 +9,12 @@ services:
     depends_on:
       - db
     volumes:
-      - .:/go/src/github.com/tardog/schutzstreifen
+      - .:/schutzstreifen
+      - gocache:/go
       - ./docker/volumes/db/:/var/lib/postgresql/data
     environment:
       - ADDR=0.0.0.0
+    working_dir: /schutzstreifen
 
   db:
     build: ./docker/images/db
@@ -22,3 +24,17 @@ services:
     environment:
       POSTGRES_USER: schutzstreifen
       POSTGRES_PASSWORD: schutzstreifen
+
+  build:
+    build: ./docker/images/build
+    depends_on:
+      - db
+    volumes:
+      - .:/schutzstreifen
+      - gocache:/go
+      - ./docker/volumes/db/:/var/lib/postgresql/data
+    working_dir: /schutzstreifen
+    entrypoint: buffalo
+
+volumes:
+  gocache:

@@ -17,8 +17,7 @@
 
       <div class="auth">
           <%= if (current_user) { %>
-            <h1><%= current_user.Email %></h1>
-            <a href="/logout" data-method="delete">abmelden</a>
+            <p><b><%= current_user.Email %></b> | <a href="/logout">abmelden</a></p>
           <% } else { %>
             <a href="/login" class="btn btn-primary">anmelden</a>
             <a href="/users/new" class="btn btn-success">registrieren</a>

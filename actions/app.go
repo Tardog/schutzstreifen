@@ -69,7 +69,7 @@ func App() *buffalo.App {
 
 		app.GET("/login", AuthNew)
 		app.POST("/login", AuthCreate)
-		app.DELETE("/logout", AuthDestroy)
+		app.GET("/logout", AuthDestroy)
 
 		usersRes := UsersResource{}
 

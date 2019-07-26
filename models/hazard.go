@@ -30,6 +30,11 @@ type Geography struct {
 	Longitude float32
 }
 
+func (g Geography) String() string {
+	jh, _ := json.Marshal(g)
+	return string(jh)
+}
+
 // String is not required by pop and may be deleted
 func (h Hazard) String() string {
 	jh, _ := json.Marshal(h)
@@ -48,7 +53,25 @@ func (h Hazards) String() string {
 // Validate gets run every time you call a "pop.Validate*" (pop.ValidateAndSave, pop.ValidateAndCreate, pop.ValidateAndUpdate) method.
 // This method is not required and may be deleted.
 func (h *Hazard) Validate(tx *pop.Connection) (*validate.Errors, error) {
-	return validate.NewErrors(), nil
+	errors := validate.NewErrors()
+
+	if "" == h.Label {
+		errors.Add("Label", "Label cannot be empty")
+	}
+
+	if "" == h.Description {
+		errors.Add("Description", "Description cannot be empty")
+	}
+
+	if "" == h.Location.String() {
+		errors.Add("Location", "Location cannot be empty")
+	}
+
+	if "" == h.HazardTypeID.String() {
+		errors.Add("HazardTypeID", "Please select a type for this hazard")
+	}
+
+	return errors, nil
 }
 
 // ValidateCreate gets run every time you call "pop.ValidateAndCreate" method.

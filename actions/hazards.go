@@ -73,6 +73,26 @@ func (v HazardsResource) Show(c buffalo.Context) error {
 // New renders the form for creating a new Hazard.
 // This function is mapped to the path GET /hazards/new
 func (v HazardsResource) New(c buffalo.Context) error {
+	hazardTypes := []models.HazardType{}
+
+	tx, ok := c.Value("tx").(*pop.Connection)
+	if !ok {
+		return errors.WithStack(errors.New("no transaction found"))
+	}
+
+	err := tx.All(&hazardTypes)
+	if err != nil {
+		return c.Error(500, err)
+	}
+
+	selectOptions := make(map[string]interface{})
+
+	for _, hazardType := range hazardTypes {
+		selectOptions[hazardType.Label] = hazardType.ID
+	}
+
+	c.Set("HazardTypes", selectOptions)
+
 	return c.Render(200, r.Auto(c, &models.Hazard{}))
 }
 

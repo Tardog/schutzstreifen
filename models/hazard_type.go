@@ -36,36 +36,14 @@ func (h HazardTypes) String() string {
 // Validate gets run every time you call a "pop.Validate*" (pop.ValidateAndSave, pop.ValidateAndCreate, pop.ValidateAndUpdate) method.
 // This method is not required and may be deleted.
 func (h *HazardType) Validate(tx *pop.Connection) (*validate.Errors, error) {
-	return validate.NewErrors(), nil
-}
-
-// ValidateCreate gets run every time you call "pop.ValidateAndCreate" method.
-// This method is not required and may be deleted.
-func (h *HazardType) ValidateCreate(tx *pop.Connection) (*validate.Errors, error) {
 	errors := validate.NewErrors()
 
 	if "" == h.Label {
-		errors.Add("label", "Label cannot be empty")
+		errors.Add("Label", "Label cannot be empty")
 	}
 
 	if "" == h.Description {
-		errors.Add("description", "Description cannot be empty")
-	}
-
-	return errors, nil
-}
-
-// ValidateUpdate gets run every time you call "pop.ValidateAndUpdate" method.
-// This method is not required and may be deleted.
-func (h *HazardType) ValidateUpdate(tx *pop.Connection) (*validate.Errors, error) {
-	errors := validate.NewErrors()
-
-	if "" == h.Label {
-		errors.Add("label", "Label cannot be empty")
-	}
-
-	if "" == h.Description {
-		errors.Add("description", "Description cannot be empty")
+		errors.Add("Description", "Description cannot be empty")
 	}
 
 	return errors, nil

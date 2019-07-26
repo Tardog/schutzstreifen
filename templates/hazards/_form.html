@@ -2,10 +2,10 @@
 <%= f.TextArea("Description") %>
 <fieldset>
     <legend>Location</legend>
-    <%= f.InputTag("Location.Latitude", {label: "Latitude"}) %>
-    <%= f.InputTag("Location.Longitude", {label: "Longitude"}) %>
+    <%= f.InputTag("Lat") %>
+    <%= f.InputTag("Lon") %>
 </fieldset>
-<%= f.CheckboxTag("Visible", {unchecked: false}) %>
+<%= f.CheckboxTag("Visible") %>
 <%= f.SelectTag("HazardTypeID", {options: HazardTypes}) %>
 
 <button class="btn btn-success" role="submit">Save</button>

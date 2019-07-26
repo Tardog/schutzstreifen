@@ -14,7 +14,8 @@ type Hazard struct {
 	ID           uuid.UUID  `json:"id" db:"id"`
 	Label        string     `json:"label" db:"label"`
 	Description  string     `json:"description" db:"description"`
-	Location     Geography  `json:"location" db:"location"`
+	Lat          float32    `json:"lat" db:"lat"`
+	Lon          float32    `json:"lon" db:"lon"`
 	Visible      bool       `json:"visible" db:"visible"`
 	User         User       `json:"user" belongs_to:"user"`
 	UserID       uuid.UUID  `db:"user_id"`
@@ -22,17 +23,6 @@ type Hazard struct {
 	HazardTypeID uuid.UUID  `db:"hazard_type_id"`
 	CreatedAt    time.Time  `json:"created_at" db:"created_at"`
 	UpdatedAt    time.Time  `json:"updated_at" db:"updated_at"`
-}
-
-// Geography is a geographical point
-type Geography struct {
-	Latitude  float32
-	Longitude float32
-}
-
-func (g Geography) String() string {
-	jh, _ := json.Marshal(g)
-	return string(jh)
 }
 
 // String is not required by pop and may be deleted
@@ -63,8 +53,12 @@ func (h *Hazard) Validate(tx *pop.Connection) (*validate.Errors, error) {
 		errors.Add("Description", "Description cannot be empty")
 	}
 
-	if "" == h.Location.String() {
-		errors.Add("Location", "Location cannot be empty")
+	if 0 == h.Lat {
+		errors.Add("Lat", "Lat cannot be empty")
+	}
+
+	if 0 == h.Lon {
+		errors.Add("Lon", "Lon cannot be empty")
 	}
 
 	if "" == h.HazardTypeID.String() {

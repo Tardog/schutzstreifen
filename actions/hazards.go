@@ -3,6 +3,7 @@ package actions
 import (
 	"github.com/gobuffalo/buffalo"
 	"github.com/gobuffalo/pop"
+	"github.com/gofrs/uuid"
 	"github.com/pkg/errors"
 	"github.com/tardog/schutzstreifen/models"
 )
@@ -112,6 +113,8 @@ func (v HazardsResource) Create(c buffalo.Context) error {
 	if !ok {
 		return errors.WithStack(errors.New("no transaction found"))
 	}
+
+	hazard.UserID = c.Session().Get("current_user_id").(uuid.UUID)
 
 	// Validate the data from the html form
 	verrs, err := tx.ValidateAndCreate(hazard)

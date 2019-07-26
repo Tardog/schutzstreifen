@@ -14,8 +14,8 @@ type Hazard struct {
 	ID           uuid.UUID  `json:"id" db:"id"`
 	Label        string     `json:"label" db:"label"`
 	Description  string     `json:"description" db:"description"`
-	Lat          float32    `json:"lat" db:"lat"`
-	Lon          float32    `json:"lon" db:"lon"`
+	Lat          float64    `json:"lat" db:"lat"`
+	Lon          float64    `json:"lon" db:"lon"`
 	Visible      bool       `json:"visible" db:"visible"`
 	User         User       `json:"user" belongs_to:"user"`
 	UserID       uuid.UUID  `db:"user_id"`

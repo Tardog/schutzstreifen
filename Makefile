@@ -2,8 +2,12 @@ project = schutzstreifen
 buffalo_compose = docker-compose -p $(project) -f docker-compose.yml
 buffalo_run = $(buffalo_compose) run --rm build
 buffalo_env ?= development
+build_arguments ?=
 
-install: create-db migrate compile-css
+setup: build-containers install-plugins create-db migrate compile-css
+
+install-plugins:
+	$(buffalo_run) plugins install
 
 create-db:
 	$(buffalo_run) pop create -e $(buffalo_env)
@@ -29,7 +33,7 @@ stop:
 restart: stop start
 
 build-containers:
-	$(buffalo_compose) -f docker-compose.yml build --no-cache
+	$(buffalo_compose) -f docker-compose.yml build $(build_arguments)
 
 test:
 	-$(buffalo_run) test

@@ -18,7 +18,7 @@ migrate:
 	$(buffalo_run) pop migrate -e $(buffalo_env)
 
 start:
-	$(buffalo_compose) up app -d
+	$(buffalo_compose) up -d app
 
 start-dev:
 	$(buffalo_compose) up app

@@ -19,13 +19,16 @@ body, html {
     }
 }
 
-.branding {
+.menu {
     flex: 2 0;
+}
+
+.branding {
+    flex: 0;
     margin: 0;
 }
 
 .auth {
-    flex: 1 0;
     text-align: right;
 }
 

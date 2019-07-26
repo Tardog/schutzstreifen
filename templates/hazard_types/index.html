@@ -7,12 +7,22 @@
 
 <table class="table table-striped">
   <thead>
-  <th>&nbsp;</th>
+    <tr>
+      <th>Label</th>
+      <th>Description</th>
+      <th>Actions</th>
+    </tr>
   </thead>
   <tbody>
     <%= for (hazardType) in hazardTypes { %>
       <tr>
-      <td>
+        <td>
+          <%= hazardType.Label %>
+        </td>
+        <td>
+          <%= hazardType.Description %>
+        </td>
+        <td>
           <div class="pull-right">
             <a href="<%= hazardTypePath({ hazard_type_id: hazardType.ID }) %>" class="btn btn-info">View</a>
             <a href="<%= editHazardTypePath({ hazard_type_id: hazardType.ID }) %>" class="btn btn-warning">Edit</a>
@@ -20,10 +30,10 @@
           </div>
         </td>
       </tr>
-    <% } %>
-  </tbody>
-</table>
+      <% } %>
+    </tbody>
+  </table>
 
-<div class="text-center">
-  <%= paginator(pagination) %>
-</div>
+  <div class="text-center">
+    <%= paginator(pagination) %>
+  </div>

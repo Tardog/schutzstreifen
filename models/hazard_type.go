@@ -42,11 +42,31 @@ func (h *HazardType) Validate(tx *pop.Connection) (*validate.Errors, error) {
 // ValidateCreate gets run every time you call "pop.ValidateAndCreate" method.
 // This method is not required and may be deleted.
 func (h *HazardType) ValidateCreate(tx *pop.Connection) (*validate.Errors, error) {
-	return validate.NewErrors(), nil
+	errors := validate.NewErrors()
+
+	if "" == h.Label {
+		errors.Add("label", "Label cannot be empty")
+	}
+
+	if "" == h.Description {
+		errors.Add("description", "Description cannot be empty")
+	}
+
+	return errors, nil
 }
 
 // ValidateUpdate gets run every time you call "pop.ValidateAndUpdate" method.
 // This method is not required and may be deleted.
 func (h *HazardType) ValidateUpdate(tx *pop.Connection) (*validate.Errors, error) {
-	return validate.NewErrors(), nil
+	errors := validate.NewErrors()
+
+	if "" == h.Label {
+		errors.Add("label", "Label cannot be empty")
+	}
+
+	if "" == h.Description {
+		errors.Add("description", "Description cannot be empty")
+	}
+
+	return errors, nil
 }

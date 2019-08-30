@@ -4,7 +4,7 @@ build_run = $(docker) run --rm build
 buffalo_env ?= development
 build_arguments ?=
 
-setup: build-containers install-plugins drop-db create-db migrate css
+setup: build-containers install-plugins reset-db migrate css
 
 install-plugins:
 	$(build_run) plugins install
@@ -42,4 +42,4 @@ css:
 	$(docker) run --rm --entrypoint sassc build -t compressed public/assets/scss/application.scss public/assets/application.css
 
 cli:
-	$(docker) exec dev bash
+	$(docker) exec app bash

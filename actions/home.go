@@ -16,13 +16,13 @@ func HomeHandler(c buffalo.Context) error {
 func PointsHandler(c buffalo.Context) error {
 	tx, ok := c.Value("tx").(*pop.Connection)
 	if !ok {
-		return errors.WithStack(errors.New("no transaction found"))
+		return c.Render(500, r.JSON(errors.New("Database connection failed")))
 	}
 
 	hazards := &models.Hazards{}
 
-	if err := tx.Where("visible = true").All(hazards); err != nil {
-		return errors.WithStack(err)
+	if err := tx.Eager().Where("visible = true").All(hazards); err != nil {
+		return c.Render(500, r.JSON(err))
 	}
 
 	return c.Render(200, r.JSON(hazards))

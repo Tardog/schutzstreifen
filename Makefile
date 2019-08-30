@@ -1,45 +1,45 @@
 project = schutzstreifen
-buffalo_compose = docker-compose -p $(project) -f docker-compose.yml
-buffalo_run = $(buffalo_compose) run --rm build
+docker = docker-compose -p $(project) -f docker-compose.yml
+build_run = $(docker) run --rm build
 buffalo_env ?= development
 build_arguments ?=
 
-setup: build-containers install-plugins create-db migrate compile-css
+setup: build-containers install-plugins drop-db create-db migrate css
 
 install-plugins:
-	$(buffalo_run) plugins install
+	$(build_run) plugins install
 
 create-db:
-	$(buffalo_run) pop create -e $(buffalo_env)
+	$(build_run) pop create -e $(buffalo_env)
 
 reset-db:
-	$(buffalo_run) pop reset -e $(buffalo_env)
+	$(build_run) pop reset -e $(buffalo_env)
 
 drop-db:
-	$(buffalo_run) pop drop -e $(buffalo_env)
+	$(build_run) pop drop -e $(buffalo_env)
 
 migrate:
-	$(buffalo_run) pop migrate -e $(buffalo_env)
+	$(build_run) pop migrate -e $(buffalo_env)
 
 start:
-	$(buffalo_compose) up -d app
+	$(docker) up -d app
 
 start-dev:
-	$(buffalo_compose) up app
+	$(docker) up app
 
 stop:
-	$(buffalo_compose) down
+	$(docker) down
 
 restart: stop start
 
 build-containers:
-	$(buffalo_compose) -f docker-compose.yml build $(build_arguments)
+	$(docker) -f docker-compose.yml build $(build_arguments)
 
 test:
-	-$(buffalo_run) test
+	-$(build_run) test
 
 css:
-	sassc -t compressed public/assets/scss/application.scss public/assets/application.css
+	$(docker) run --rm --entrypoint sassc build -t compressed public/assets/scss/application.scss public/assets/application.css
 
 cli:
-	$(buffalo_compose) exec dev bash
+	$(docker) exec dev bash

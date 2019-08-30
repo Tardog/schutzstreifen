@@ -15,7 +15,14 @@ fetch(pointsUrl).then(response => {
       riseOnHover: true,
     }).addTo(hazardMap);
 
-    hazard.bindPopup(point.description);
+    let createdDate = new Date(point.created_at);
+
+    hazard.bindPopup(`
+      <h3 class="popup-heading">${point.label}</h3>
+      <p class="popup-hazard-type">${point.hazard_type.label}</p>
+      <p class="popup-description">${point.description}</p>
+      <p class="popup-author"><small>Submitted by ${point.user.name} on ${createdDate.toLocaleString()}</small></p>
+    `);
   }
 }).catch(error => {
   console.error('Error during fetch operation:', error.message);

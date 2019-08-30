@@ -18,9 +18,9 @@ type Hazard struct {
 	Lon          float64    `json:"lon" db:"lon"`
 	Visible      bool       `json:"visible" db:"visible"`
 	User         User       `json:"user" belongs_to:"user"`
-	UserID       uuid.UUID  `db:"user_id"`
-	HazardType   HazardType `json:"hazard_type" has_one:"hazard_type"`
-	HazardTypeID uuid.UUID  `db:"hazard_type_id"`
+	UserID       uuid.UUID  `json:"-" db:"user_id"`
+	HazardType   HazardType `json:"hazard_type" belongs_to:"hazard_type"`
+	HazardTypeID uuid.UUID  `json:"-" db:"hazard_type_id"`
 	CreatedAt    time.Time  `json:"created_at" db:"created_at"`
 	UpdatedAt    time.Time  `json:"updated_at" db:"updated_at"`
 }

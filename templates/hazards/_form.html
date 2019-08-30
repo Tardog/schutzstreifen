@@ -4,6 +4,7 @@
     <legend>Location</legend>
     <%= f.InputTag("Lat") %>
     <%= f.InputTag("Lon") %>
+    <div id="location-select-map"></div>
 </fieldset>
 <%= f.CheckboxTag("Visible") %>
 <%= f.SelectTag("HazardTypeID", {options: HazardTypes}) %>

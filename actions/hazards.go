@@ -25,7 +25,7 @@ type HazardsResource struct {
 	buffalo.Resource
 }
 
-// List gets all Hazards. This function is mapped to the path
+// List gets all Hazards of the current user. This function is mapped to the path
 // GET /hazards
 func (v HazardsResource) List(c buffalo.Context) error {
 	tx, ok := c.Value("tx").(*pop.Connection)
@@ -34,13 +34,13 @@ func (v HazardsResource) List(c buffalo.Context) error {
 	}
 
 	hazards := &models.Hazards{}
+	userID := c.Session().Get("current_user_id").(uuid.UUID)
 
 	// Paginate results. Params "page" and "per_page" control pagination.
 	// Default values are "page=1" and "per_page=20".
 	q := tx.PaginateFromParams(c.Params())
 
-	// Retrieve all Hazards from the DB
-	if err := q.All(hazards); err != nil {
+	if err := q.Eager("HazardType").Where("user_id = ?", userID).All(hazards); err != nil {
 		return errors.WithStack(err)
 	}
 

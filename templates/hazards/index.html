@@ -1,5 +1,5 @@
 <div class="page-header">
-  <h1>Hazards</h1>
+  <h1>My Hazards</h1>
 </div>
 <ul class="list-unstyled list-inline">
   <li><a href="<%= newHazardsPath() %>" class="btn btn-primary">Create New Hazard</a></li>
@@ -12,7 +12,10 @@
   <tbody>
     <%= for (hazard) in hazards { %>
       <tr>
-      <td>
+        <td><%= hazard.Label %></td>
+        <td><%= hazard.Description %></td>
+        <td><%= hazard.HazardType.Label %></td>
+        <td>
           <div class="pull-right">
             <a href="<%= hazardPath({ hazard_id: hazard.ID }) %>" class="btn btn-info">View</a>
             <a href="<%= editHazardPath({ hazard_id: hazard.ID }) %>" class="btn btn-warning">Edit</a>

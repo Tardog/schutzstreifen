@@ -6,6 +6,11 @@ body, html {
     height: 100vh;
 }
 
+#location-select-map {
+    height: 50vh;
+    width: 50vw;
+}
+
 .topbar {
     align-items: center;
     background:rgba(20,20,20,0.85);

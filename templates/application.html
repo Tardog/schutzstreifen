@@ -10,26 +10,29 @@
     <link rel="icon" href="<%= assetPath("images/favicon.ico") %>">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.4.0/dist/leaflet.css" integrity="sha512-puBpdR0798OZvTTbP4A8Ix/l+A4dHDD0DGqYW6RQ+9jxkRFclaxxQb/SJAWZfWAkuyeQUytO7+7N4QKrDh+drA==" crossorigin="" />
     <script src="https://unpkg.com/leaflet@1.4.0/dist/leaflet.js" integrity="sha512-QVftwZFqvtRNi0ZyCtsznlKSWOStnDORoefr1enyq5mVL4tmKB3S/EnC3rRJcxCPavG10IcrVGSmPh6Qw5lwrg==" crossorigin=""></script>
+    <%= javascriptTag("js/application.js") %>
   </head>
   <body>
     <header class="topbar">
       <h1 class="branding"><a href="/">Schutzstreifen</a></h1>
       <nav class="menu">
         <ul>
-          <li><a href="/hazards/new">Gefahr eintragen</a></li>
+          <%= if (current_user) { %>
+            <li><a href="/hazards">my hazards</a></li>
+            <li><a href="/hazards/new">add hazard</a></li>
+          <% } %>
         </ul>
       </nav>
 
       <div class="auth">
           <%= if (current_user) { %>
-            <p><b><%= current_user.Email %></b> | <a href="/logout">abmelden</a></p>
+            <p><b><%= current_user.Email %></b> | <a href="/logout">logout</a></p>
           <% } else { %>
-            <a href="/login" class="btn btn-primary">anmelden</a>
-            <a href="/users/new" class="btn btn-success">registrieren</a>
+            <a href="/login" class="btn btn-primary">sign in</a>
+            <a href="/users/new" class="btn btn-success">create account</a>
           <% } %>
       </div>
     </header>
     <%= yield %>
-    <%= javascriptTag("application.js") %>
   </body>
 </html>

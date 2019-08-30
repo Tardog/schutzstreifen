@@ -1,0 +1,1 @@
+TRUNCATE hazard_types;

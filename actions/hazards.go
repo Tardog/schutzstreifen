@@ -28,7 +28,6 @@ type HazardsResource struct {
 // List gets all Hazards. This function is mapped to the path
 // GET /hazards
 func (v HazardsResource) List(c buffalo.Context) error {
-	// Get the DB connection from the context
 	tx, ok := c.Value("tx").(*pop.Connection)
 	if !ok {
 		return errors.WithStack(errors.New("no transaction found"))
@@ -54,19 +53,18 @@ func (v HazardsResource) List(c buffalo.Context) error {
 // Show gets the data for one Hazard. This function is mapped to
 // the path GET /hazards/{hazard_id}
 func (v HazardsResource) Show(c buffalo.Context) error {
-	// Get the DB connection from the context
 	tx, ok := c.Value("tx").(*pop.Connection)
 	if !ok {
 		return errors.WithStack(errors.New("no transaction found"))
 	}
 
-	// Allocate an empty Hazard
 	hazard := &models.Hazard{}
 
-	// To find the Hazard the parameter hazard_id is used.
 	if err := tx.Find(hazard, c.Param("hazard_id")); err != nil {
 		return c.Error(404, err)
 	}
+
+	tx.Load(&hazard, "HazardType")
 
 	return c.Render(200, r.Auto(c, hazard))
 }
@@ -100,15 +98,12 @@ func (v HazardsResource) New(c buffalo.Context) error {
 // Create adds a Hazard to the DB. This function is mapped to the
 // path POST /hazards
 func (v HazardsResource) Create(c buffalo.Context) error {
-	// Allocate an empty Hazard
 	hazard := &models.Hazard{}
 
-	// Bind hazard to the html form elements
 	if err := c.Bind(hazard); err != nil {
 		return errors.WithStack(err)
 	}
 
-	// Get the DB connection from the context
 	tx, ok := c.Value("tx").(*pop.Connection)
 	if !ok {
 		return errors.WithStack(errors.New("no transaction found"))
@@ -116,38 +111,30 @@ func (v HazardsResource) Create(c buffalo.Context) error {
 
 	hazard.UserID = c.Session().Get("current_user_id").(uuid.UUID)
 
-	// Validate the data from the html form
 	verrs, err := tx.ValidateAndCreate(hazard)
 	if err != nil {
 		return errors.WithStack(err)
 	}
 
 	if verrs.HasAny() {
-		// Make the errors available inside the html template
 		c.Set("errors", verrs)
 
-		// Render again the new.html template that the user can
-		// correct the input.
 		return c.Render(422, r.Auto(c, hazard))
 	}
 
-	// If there are no errors set a success message
 	c.Flash().Add("success", "Hazard was created successfully")
 
-	// and redirect to the hazards index page
 	return c.Render(201, r.Auto(c, hazard))
 }
 
 // Edit renders a edit form for a Hazard. This function is
 // mapped to the path GET /hazards/{hazard_id}/edit
 func (v HazardsResource) Edit(c buffalo.Context) error {
-	// Get the DB connection from the context
 	tx, ok := c.Value("tx").(*pop.Connection)
 	if !ok {
 		return errors.WithStack(errors.New("no transaction found"))
 	}
 
-	// Allocate an empty Hazard
 	hazard := &models.Hazard{}
 
 	if err := tx.Find(hazard, c.Param("hazard_id")); err != nil {
@@ -160,20 +147,17 @@ func (v HazardsResource) Edit(c buffalo.Context) error {
 // Update changes a Hazard in the DB. This function is mapped to
 // the path PUT /hazards/{hazard_id}
 func (v HazardsResource) Update(c buffalo.Context) error {
-	// Get the DB connection from the context
 	tx, ok := c.Value("tx").(*pop.Connection)
 	if !ok {
 		return errors.WithStack(errors.New("no transaction found"))
 	}
 
-	// Allocate an empty Hazard
 	hazard := &models.Hazard{}
 
 	if err := tx.Find(hazard, c.Param("hazard_id")); err != nil {
 		return c.Error(404, err)
 	}
 
-	// Bind Hazard to the html form elements
 	if err := c.Bind(hazard); err != nil {
 		return errors.WithStack(err)
 	}
@@ -184,34 +168,26 @@ func (v HazardsResource) Update(c buffalo.Context) error {
 	}
 
 	if verrs.HasAny() {
-		// Make the errors available inside the html template
 		c.Set("errors", verrs)
 
-		// Render again the edit.html template that the user can
-		// correct the input.
 		return c.Render(422, r.Auto(c, hazard))
 	}
 
-	// If there are no errors set a success message
 	c.Flash().Add("success", "Hazard was updated successfully")
 
-	// and redirect to the hazards index page
 	return c.Render(200, r.Auto(c, hazard))
 }
 
 // Destroy deletes a Hazard from the DB. This function is mapped
 // to the path DELETE /hazards/{hazard_id}
 func (v HazardsResource) Destroy(c buffalo.Context) error {
-	// Get the DB connection from the context
 	tx, ok := c.Value("tx").(*pop.Connection)
 	if !ok {
 		return errors.WithStack(errors.New("no transaction found"))
 	}
 
-	// Allocate an empty Hazard
 	hazard := &models.Hazard{}
 
-	// To find the Hazard the parameter hazard_id is used.
 	if err := tx.Find(hazard, c.Param("hazard_id")); err != nil {
 		return c.Error(404, err)
 	}
@@ -220,9 +196,7 @@ func (v HazardsResource) Destroy(c buffalo.Context) error {
 		return errors.WithStack(err)
 	}
 
-	// If there are no errors set a flash message
 	c.Flash().Add("success", "Hazard was destroyed successfully")
 
-	// Redirect to the hazards index page
 	return c.Render(200, r.Auto(c, hazard))
 }

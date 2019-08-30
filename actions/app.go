@@ -62,6 +62,7 @@ func App() *buffalo.App {
 		app.Use(Authorize)
 
 		app.GET("/", HomeHandler)
+		app.GET("/points", PointsHandler)
 
 		usersRes := UsersResource{}
 		ur := app.Resource("/users", usersRes)

@@ -2,6 +2,25 @@
   <h1>Hazard#Show</h1>
 </div>
 
+<dl>
+  <dt>Label</dt>
+  <dd><%= hazard.Label %></dd>
+  <dt>Description</dt>
+  <dd><%= hazard.Description %></dd>
+  <dt>Location</dt>
+  <dd><%= hazard.Lat %> <%= hazard.Lon %></dd>
+  <dt>Status</dt>
+  <dd>
+    <%= if (hazard.Visible == true) { %>
+      visible
+    <% } else { %>
+      hidden
+    <% } %>
+  </dd>
+  <dt>Type</dt>
+  <dd><%= hazard.HazardType %></dd>
+</dl>
+
 <ul class="list-unstyled list-inline">
   <li class="list-inline-item"><a href="<%= hazardsPath() %>" class="btn btn-info">Back to all Hazards</a></li>
   <li class="list-inline-item"><a href="<%= editHazardPath({ hazard_id: hazard.ID })%>" class="btn btn-warning">Edit</a></li>

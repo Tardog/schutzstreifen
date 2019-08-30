@@ -27,10 +27,8 @@ func AuthCreate(c buffalo.Context) error {
 
 	tx := c.Value("tx").(*pop.Connection)
 
-	// find a user with the email
 	err := tx.Where("email = ?", strings.ToLower(strings.TrimSpace(u.Email))).First(u)
 
-	// helper function to handle bad attempts
 	bad := func() error {
 		c.Set("user", u)
 		verrs := validate.NewErrors()
@@ -41,13 +39,11 @@ func AuthCreate(c buffalo.Context) error {
 
 	if err != nil {
 		if errors.Cause(err) == sql.ErrNoRows {
-			// couldn't find an user with the supplied email address.
 			return bad()
 		}
 		return errors.WithStack(err)
 	}
 
-	// confirm that the given password matches the hashed password from the db
 	err = bcrypt.CompareHashAndPassword([]byte(u.PasswordHash), []byte(u.Password))
 	if err != nil {
 		return bad()

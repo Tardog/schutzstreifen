@@ -10,6 +10,12 @@ This application is not feature ready yet (as in: pre-alpha status). Some core f
 In addition, the frontend is pretty bare-bones right now and needs a lot of love and polishing to be presentable.
 When the first alpha is ready, the app will be made available online. You can always download the code and run it on your local machine, of course.
 
+## Installation
+If you are setting up the application for the first time, use the following make target:
+```
+make setup
+```
+
 ## Run locally
 For development, having Go and Go dev tools installed on your machine is extremely helpful.
 
@@ -22,14 +28,13 @@ make stop
 ```
 When all containers are up, the application is available at http://localhost:22080/
 
+To see debug output (logs) during development, use the following start command instead:
+```
+make start-dev
+```
+
 ### Display container log output
 With the default ```start``` target, containers are started in detached mode. If you prefer running them in the foreground, use the ```make start-dev``` target instead.
-
-## Installation
-If you are setting up the application for the first time, use the following make target:
-```
-make setup
-```
 
 ## Run tests
 ```

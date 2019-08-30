@@ -9,9 +9,13 @@ fetch(pointsUrl).then(response => {
   return response.json();
 }).then(jsonData => {
   for (let point of jsonData) {
-    if (point.lat && point.lon) {
-      L.marker([point.lat, point.lon]).addTo(hazardMap);
-    }
+    let hazard = L.marker([point.lat, point.lon], {
+      title: point.label,
+      alt: point.label,
+      riseOnHover: true,
+    }).addTo(hazardMap);
+
+    hazard.bindPopup(point.description);
   }
 }).catch(error => {
   console.error('Error during fetch operation:', error.message);

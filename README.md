@@ -6,8 +6,12 @@ Built with the [Buffalo framework](https://gobuffalo.io).
 "Schutzstreifen" is German for "protective strip". In legal terminology, it describes the kind of cheap bicycle path that gets painted on the road, often leading to conflicts between drivers and cyclists due to cars parking on or too close next to the strip, close passes on the road, among others. Many of these contraptions are inherently unsafe for cyclists, which has earned them the nickname of "Gefährdungsstreifen" (literally "hazard strip").
 
 ## ⛔️ Attention: Work in progress ⛔️
-This application is not feature ready yet (as in: pre-alpha status). Some core functionality is still missing (points can be created in the database, but don't currently show up on the map).
-In addition, the frontend is pretty bare-bones right now and needs a lot of love and polishing to be presentable.
+This application is not feature ready yet (as in: pre-alpha status):
+- Several routes are only implemented in the most basic way possible
+- Validation and error handling require work to improve security and user experience
+- The frontend is pretty bare-bones right now and needs a lot of love and polish to be presentable
+- Every single user has access to all POST endpoints, which is not desirable - there should be an admin user e.g. for managing available hazard types, removing users etc.
+
 When the first alpha is ready, the app will be made available online. You can always download the code and run it on your local machine, of course.
 
 ## Installation

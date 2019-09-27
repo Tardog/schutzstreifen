@@ -1,6 +1,6 @@
-<div class="page-header">
+<header class="page-header">
   <h1>Edit HazardType</h1>
-</div>
+</header>
 
 <%= form_for(hazardType, {action: hazardTypePath({ hazard_type_id: hazardType.ID }), method: "PUT"}) { %>
   <%= partial("hazard_types/form.html") %>

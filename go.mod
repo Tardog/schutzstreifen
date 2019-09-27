@@ -14,6 +14,8 @@ require (
 	github.com/gobuffalo/pop v4.11.1+incompatible
 	github.com/gobuffalo/uuid v2.0.5+incompatible
 	github.com/gobuffalo/validate v2.0.3+incompatible
+	github.com/gofrs/uuid v3.2.0+incompatible
+	github.com/markbates/grift v1.0.6
 	github.com/pkg/errors v0.8.1
 	github.com/spf13/afero v1.2.1 // indirect
 	github.com/unrolled/secure v1.0.0

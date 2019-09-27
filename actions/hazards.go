@@ -59,12 +59,11 @@ func (v HazardsResource) Show(c buffalo.Context) error {
 	}
 
 	hazard := &models.Hazard{}
+	userID := c.Session().Get("current_user_id").(uuid.UUID)
 
-	if err := tx.Find(hazard, c.Param("hazard_id")); err != nil {
+	if err := tx.Eager("HazardType").Where("user_id = ?", userID).Find(hazard, c.Param("hazard_id")); err != nil {
 		return c.Error(404, err)
 	}
-
-	tx.Load(&hazard, "HazardType")
 
 	return c.Render(200, r.Auto(c, hazard))
 }
@@ -92,13 +91,20 @@ func (v HazardsResource) New(c buffalo.Context) error {
 func (v HazardsResource) Create(c buffalo.Context) error {
 	hazard := &models.Hazard{}
 
-	if err := c.Bind(hazard); err != nil {
-		return errors.WithStack(err)
-	}
-
 	tx, ok := c.Value("tx").(*pop.Connection)
 	if !ok {
 		return errors.WithStack(errors.New("no transaction found"))
+	}
+
+	selectOptions, err := buildHazardTypeSelectOptions(tx)
+	if err != nil {
+		return c.Error(500, err)
+	}
+
+	c.Set("HazardTypes", selectOptions)
+
+	if err := c.Bind(hazard); err != nil {
+		return errors.WithStack(err)
 	}
 
 	hazard.UserID = c.Session().Get("current_user_id").(uuid.UUID)
@@ -109,7 +115,9 @@ func (v HazardsResource) Create(c buffalo.Context) error {
 	}
 
 	if verrs.HasAny() {
-		c.Set("errors", verrs)
+		for _, verr := range verrs.Errors {
+			c.Flash().Add("error", verr[0])
+		}
 
 		return c.Render(422, r.Auto(c, hazard))
 	}
@@ -153,6 +161,13 @@ func (v HazardsResource) Update(c buffalo.Context) error {
 
 	hazard := &models.Hazard{}
 
+	selectOptions, err := buildHazardTypeSelectOptions(tx)
+	if err != nil {
+		return c.Error(500, err)
+	}
+
+	c.Set("HazardTypes", selectOptions)
+
 	if err := tx.Find(hazard, c.Param("hazard_id")); err != nil {
 		return c.Error(404, err)
 	}
@@ -167,7 +182,9 @@ func (v HazardsResource) Update(c buffalo.Context) error {
 	}
 
 	if verrs.HasAny() {
-		c.Set("errors", verrs)
+		for _, verr := range verrs.Errors {
+			c.Flash().Add("error", verr[0])
+		}
 
 		return c.Render(422, r.Auto(c, hazard))
 	}

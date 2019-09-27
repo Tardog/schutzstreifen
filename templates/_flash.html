@@ -1,9 +1,11 @@
 <%= if (len(flash) > 0) { %>
-  <%= for (k, messages) in flash { %>
-    <%= for (msg) in messages { %>
-      <div class="alert alert-<%= k %>" role="alert">
-        <%= msg %>
-      </div>
+  <div class="flash-messages">
+    <%= for (k, messages) in flash { %>
+      <%= for (msg) in messages { %>
+        <div class="flash-<%= k %>">
+          <%= msg %>
+        </div>
+      <% } %>
     <% } %>
-  <% } %>
+  </div>
 <% } %>

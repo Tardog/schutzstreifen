@@ -18,6 +18,7 @@ type User struct {
 	Email        string    `json:"email" db:"email"`
 	PasswordHash string    `json:"password_hash" db:"password"`
 	Password     string    `json:"-" db:"-" `
+	Admin        bool      `json:"-" db:"admin"`
 	Hazards      Hazards   `json:"hazards" has_many:"hazards" order_by:"updated_at desc"`
 	CreatedAt    time.Time `json:"created_at" db:"created_at"`
 	UpdatedAt    time.Time `json:"updated_at" db:"updated_at"`
@@ -69,6 +70,7 @@ func (u *User) BeforeCreate(tx *pop.Connection) error {
 	}
 
 	u.PasswordHash = string(hash)
+	u.Admin = false
 
 	return nil
 }

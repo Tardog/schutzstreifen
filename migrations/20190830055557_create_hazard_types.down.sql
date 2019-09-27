@@ -1,1 +1,1 @@
-TRUNCATE hazard_types;
+DELETE FROM hazard_types;

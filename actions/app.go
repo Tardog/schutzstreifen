@@ -5,6 +5,9 @@ import (
 	"github.com/gobuffalo/envy"
 	forcessl "github.com/gobuffalo/mw-forcessl"
 	paramlogger "github.com/gobuffalo/mw-paramlogger"
+	"github.com/gobuffalo/pop"
+	"github.com/gofrs/uuid"
+	"github.com/pkg/errors"
 	"github.com/unrolled/secure"
 
 	"github.com/gobuffalo/buffalo-pop/pop/popmw"
@@ -60,7 +63,6 @@ func App() *buffalo.App {
 
 		app.Use(SetCurrentUser)
 		app.Use(Authorize)
-
 		app.Use(addMapboxToken)
 
 		app.GET("/", HomeHandler)
@@ -68,8 +70,12 @@ func App() *buffalo.App {
 
 		usersRes := UsersResource{}
 		usersRoute := app.Resource("/users", usersRes)
+
 		app.Resource("/hazards", HazardsResource{})
-		app.Resource("/hazard_types", HazardTypesResource{})
+
+		adminGroup := app.Group("/")
+		adminGroup.Use(authorizeAdmin)
+		adminGroup.Resource("/hazard_types", HazardTypesResource{})
 
 		app.GET("/login", AuthNew)
 		app.POST("/login", AuthCreate)
@@ -119,6 +125,27 @@ func addMapboxToken(next buffalo.Handler) buffalo.Handler {
 		}
 
 		c.Set("mapboxToken", mapboxToken)
+		return next(c)
+	}
+}
+
+// authorizeAdmin will check whether the current user has admin rights
+func authorizeAdmin(next buffalo.Handler) buffalo.Handler {
+	return func(c buffalo.Context) error {
+		tx, ok := c.Value("tx").(*pop.Connection)
+		if !ok {
+			return errors.WithStack(errors.New("no transaction found"))
+		}
+
+		user := &models.User{}
+		if err := tx.Find(user, c.Session().Get("current_user_id").(uuid.UUID)); err != nil {
+			return c.Redirect(401, "loginPath()")
+		}
+
+		if !user.Admin {
+			return c.Error(404, errors.New("Nothing to see here"))
+		}
+
 		return next(c)
 	}
 }

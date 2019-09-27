@@ -68,14 +68,14 @@ func App() *buffalo.App {
 		app.GET("/", HomeHandler)
 		app.GET("/points", PointsHandler)
 
-		usersRes := UsersResource{}
-		usersRoute := app.Resource("/users", usersRes)
-
 		app.Resource("/hazards", HazardsResource{})
 
 		adminGroup := app.Group("/")
 		adminGroup.Use(authorizeAdmin)
 		adminGroup.Resource("/hazard_types", HazardTypesResource{})
+
+		usersRes := UsersResource{}
+		usersRoute := adminGroup.Resource("/users", usersRes)
 
 		app.GET("/login", AuthNew)
 		app.POST("/login", AuthCreate)
@@ -84,6 +84,7 @@ func App() *buffalo.App {
 		// Routes not requiring login
 		app.Middleware.Skip(Authorize, HomeHandler, AuthNew, AuthCreate, PointsHandler)
 		usersRoute.Middleware.Skip(Authorize, usersRes.New, usersRes.Create)
+		usersRoute.Middleware.Skip(authorizeAdmin, usersRes.New, usersRes.Create)
 
 		app.ServeFiles("/", assetsBox) // serve files from the public directory
 	}

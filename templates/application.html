@@ -8,34 +8,31 @@
     <meta name="csrf-param" content="authenticity_token" />
     <meta name="csrf-token" content="<%= authenticity_token %>" />
     <link rel="icon" href="<%= assetPath("images/favicon.ico") %>">
+    <link href="https://fonts.googleapis.com/css?family=Fira+Sans&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.4.0/dist/leaflet.css" integrity="sha512-puBpdR0798OZvTTbP4A8Ix/l+A4dHDD0DGqYW6RQ+9jxkRFclaxxQb/SJAWZfWAkuyeQUytO7+7N4QKrDh+drA==" crossorigin="" />
     <script src="https://unpkg.com/leaflet@1.4.0/dist/leaflet.js" integrity="sha512-QVftwZFqvtRNi0ZyCtsznlKSWOStnDORoefr1enyq5mVL4tmKB3S/EnC3rRJcxCPavG10IcrVGSmPh6Qw5lwrg==" crossorigin=""></script>
     <%= javascriptTag("js/application.js") %>
   </head>
-  <body>
+  <body class="">
     <div class="page-container">
       <section class="sidebar">
         <header class="site-header">
           <a href="/"><img src="<%= assetPath("images/schutzstreifen.svg") %>" class="branding-image" alt="Damaged cycle path sign"></a>
           <h1 class="branding">Schutzstreifen</h1>
         </header>
-          <nav class="menu">
+          <nav class="main-menu">
             <ul>
-              <li><a href="/">hazard map</a></li>
+              <li class="menu-item"><a href="/">hazard map</a></li>
               <%= if (current_user) { %>
-                <li><a href="<%= newHazardsPath() %>">add hazard</a></li>
-                <li><a href="<%= hazardsPath() %>">my hazards</a></li>
-                <li><a href="<%= logoutPath() %>">logout</a></li>
+                <li class="menu-item"><a href="<%= newHazardsPath() %>">add hazard</a></li>
+                <li class="menu-item"><a href="<%= hazardsPath() %>">my hazards</a></li>
+                <li class="menu-item"><a href="<%= logoutPath() %>">logout</a></li>
               <% } else { %>
-                <li><a href="<%= loginPath() %>" class="btn btn-primary">sign in</a></li>
-                <li><a href="<%= newUsersPath() %>" class="btn btn-success">create account</a></li>
+                <li class="menu-item"><a href="<%= loginPath() %>" class="btn btn-primary">sign in</a></li>
+                <li class="menu-item"><a href="<%= newUsersPath() %>" class="btn btn-success">create account</a></li>
               <% } %>
             </ul>
           </nav>
-
-          <div class="auth">
-
-          </div>
       </section>
       <section class="main-content">
         <%= yield %>

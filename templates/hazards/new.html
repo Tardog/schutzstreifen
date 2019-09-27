@@ -4,6 +4,5 @@
 
 <%= form_for(hazard, {action: hazardsPath(), method: "POST"}) { %>
   <%= partial("hazards/form.html") %>
-  <%= javascriptTag("js/locationSelectMap.js") %>
   <a href="<%= hazardsPath() %>" class="btn btn-warning" data-confirm="Are you sure?">Cancel</a>
 <% } %>

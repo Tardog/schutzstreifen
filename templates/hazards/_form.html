@@ -8,5 +8,6 @@
 </fieldset>
 <%= f.CheckboxTag("Visible") %>
 <%= f.SelectTag("HazardTypeID", {options: HazardTypes}) %>
+<%= javascriptTag(assetPath("js/locationSelectMap.js")) %>
 
 <button class="btn btn-success" role="submit">Save</button>

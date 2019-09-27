@@ -61,6 +61,8 @@ func App() *buffalo.App {
 		app.Use(SetCurrentUser)
 		app.Use(Authorize)
 
+		app.Use(addMapboxToken)
+
 		app.GET("/", HomeHandler)
 		app.GET("/points", PointsHandler)
 
@@ -105,4 +107,18 @@ func forceSSL() buffalo.MiddlewareFunc {
 		SSLRedirect:     ENV == "production",
 		SSLProxyHeaders: map[string]string{"X-Forwarded-Proto": "https"},
 	})
+}
+
+// addMapboxToken will attempt to find a mapbox token in the environment and set it on the context.
+func addMapboxToken(next buffalo.Handler) buffalo.Handler {
+	return func(c buffalo.Context) error {
+		mapboxToken, err := envy.MustGet("MAPBOX_API_TOKEN")
+
+		if err != nil {
+			return err
+		}
+
+		c.Set("mapboxToken", mapboxToken)
+		return next(c)
+	}
 }

@@ -4,7 +4,7 @@ const hazardMap = L.map('main-map', {
     zoom: 7,
 });
 
-osmTileLayer.addTo(hazardMap);
+mapboxLayer.addTo(hazardMap);
 
 // Fetch a JSON representation of geographical points to create markers
 fetch(pointsUrl).then((response) => {
@@ -24,9 +24,11 @@ fetch(pointsUrl).then((response) => {
 
         hazard.bindPopup(`
       <h3 class="popup-heading">${point.label}</h3>
-      <p class="popup-hazard-type">${point.hazard_type.label}</p>
-      <p class="popup-description">${point.description}</p>
-      <p class="popup-author"><small>Submitted by ${point.user.name} on ${createdDate.toLocaleString()}</small></p>
+      <div class="popup-info">
+        <p class="popup-hazard-type"><b>Type:</b> ${point.hazard_type.label}</p>
+        <p class="popup-description"><b>Description:</b> ${point.description}</p>
+        <p class="popup-author"><small>Submitted by ${point.user.name} on ${createdDate.toLocaleString()}</small></p>
+      </div>
     `);
     }
 }).catch((error) => {

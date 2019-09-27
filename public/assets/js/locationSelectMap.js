@@ -1,9 +1,9 @@
 const locationMap = L.map('location-select-map', {
     center: [51.163375, 10.447683],
-    zoom: 7,
+    zoom: 3,
 });
 
-osmTileLayer.addTo(locationMap);
+mapboxLayer.addTo(locationMap);
 
 locationMap.on('click', (event) => {
     const coordinates = event.latlng;

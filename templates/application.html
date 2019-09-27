@@ -13,26 +13,33 @@
     <%= javascriptTag("js/application.js") %>
   </head>
   <body>
-    <header class="topbar">
-      <h1 class="branding"><a href="/">Schutzstreifen</a></h1>
-      <nav class="menu">
-        <ul>
-          <%= if (current_user) { %>
-            <li><a href="/hazards">my hazards</a></li>
-            <li><a href="/hazards/new">add hazard</a></li>
-          <% } %>
-        </ul>
-      </nav>
+    <div class="page-container">
+      <section class="sidebar">
+        <header class="site-header">
+          <a href="/"><img src="<%= assetPath("images/schutzstreifen.svg") %>" class="branding-image" alt="Damaged cycle path sign"></a>
+          <h1 class="branding">Schutzstreifen</h1>
+        </header>
+          <nav class="menu">
+            <ul>
+              <li><a href="/">hazard map</a></li>
+              <%= if (current_user) { %>
+                <li><a href="<%= newHazardsPath() %>">add hazard</a></li>
+                <li><a href="<%= hazardsPath() %>">my hazards</a></li>
+                <li><a href="<%= logoutPath() %>">logout</a></li>
+              <% } else { %>
+                <li><a href="<%= loginPath() %>" class="btn btn-primary">sign in</a></li>
+                <li><a href="<%= newUsersPath() %>" class="btn btn-success">create account</a></li>
+              <% } %>
+            </ul>
+          </nav>
 
-      <div class="auth">
-          <%= if (current_user) { %>
-            <p><b><%= current_user.Email %></b> | <a href="/logout">logout</a></p>
-          <% } else { %>
-            <a href="/login" class="btn btn-primary">sign in</a>
-            <a href="/users/new" class="btn btn-success">create account</a>
-          <% } %>
-      </div>
-    </header>
-    <%= yield %>
+          <div class="auth">
+
+          </div>
+      </section>
+      <section class="main-content">
+        <%= yield %>
+      </section>
+    </div>
   </body>
 </html>

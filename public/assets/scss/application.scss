@@ -1,22 +1,43 @@
+// Page layout
 body, html {
     margin: 0;
 }
 
+.page-container {
+    display: flex;
+    height: 100vh;
+}
+
+// Maps
 #main-map {
     height: 100vh;
 }
 
 #location-select-map {
     height: 50vh;
+    max-width: 650px;
     width: 50vw;
 }
 
-.topbar {
+// Header
+.branding {
+    flex: 0;
+    margin: 0;
+}
+
+.branding-image {
+    width: 100%;
+}
+
+
+// Sidebar
+.sidebar {
     align-items: center;
     background:rgba(20,20,20,0.85);
     color: #eeeeee;
-    display: flex;
-    padding: 1rem 1.5rem;
+    max-width: 220px;
+    padding: 1rem 2rem;
+    width: 10vw;
 
     a {
         color: #fff;
@@ -28,22 +49,33 @@ body, html {
     flex: 2 0;
 }
 
-.branding {
-    flex: 0;
-    margin: 0;
-}
-
 .auth {
     text-align: right;
 }
 
+// Content
 .main-content {
     position: relative;
+    width: 100%;
     z-index: 0;
 }
 
 table {
     th {
         text-align: left;
+    }
+}
+
+// Popups
+.popup-heading {
+    font-size: 1.2rem;
+    margin: 0.3rem 0;
+}
+
+.leaflet-popup-content {
+    .popup-info {
+        p {
+            margin: 0.25rem 0;
+        }
     }
 }

@@ -89,6 +89,7 @@ CREATE TABLE public.users (
     name character varying(100) NOT NULL,
     email character varying(255) NOT NULL,
     password character varying(255) NOT NULL,
+    admin boolean DEFAULT false,
     created_at timestamp with time zone DEFAULT CURRENT_TIMESTAMP,
     updated_at timestamp with time zone DEFAULT CURRENT_TIMESTAMP
 );

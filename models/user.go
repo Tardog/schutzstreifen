@@ -7,6 +7,7 @@ import (
 	"github.com/gobuffalo/pop"
 	"github.com/gobuffalo/uuid"
 	"github.com/gobuffalo/validate"
+	"github.com/gobuffalo/validate/validators"
 	"github.com/pkg/errors"
 	"golang.org/x/crypto/bcrypt"
 )
@@ -32,33 +33,20 @@ func (u Users) String() string {
 }
 
 func (u *User) ValidateCreate(tx *pop.Connection) (*validate.Errors, error) {
-	errors := validate.NewErrors()
-
-	if "" == u.Name {
-		errors.Add("name", "Name cannot be empty")
-	}
-
-	if "" == u.Email {
-		errors.Add("email", "Email cannot be empty")
-	}
-
-	if "" == u.Password {
-		errors.Add("password", "Password cannot be empty")
-	}
+	errors := validate.Validate(
+		&validators.StringIsPresent{Name: "Name", Field: u.Name, Message: "You can't be nameless."},
+		&validators.EmailIsPresent{Name: "Email", Field: u.Email, Message: "Please provide a valid e-mail address."},
+		&validators.StringIsPresent{Name: "Password", Field: u.Password, Message: "You need to choose a password."},
+	)
 
 	return errors, nil
 }
 
 func (u *User) ValidateUpdate(tx *pop.Connection) (*validate.Errors, error) {
-	errors := validate.NewErrors()
-
-	if "" == u.Name {
-		errors.Add("name", "Name cannot be empty")
-	}
-
-	if "" == u.Email {
-		errors.Add("email", "Email cannot be empty")
-	}
+	errors := validate.Validate(
+		&validators.StringIsPresent{Name: "Name", Field: u.Name, Message: "You can't be nameless."},
+		&validators.EmailIsPresent{Name: "Email", Field: u.Email, Message: "Please provide a valid e-mail address."},
+	)
 
 	return errors, nil
 }

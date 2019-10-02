@@ -7,6 +7,7 @@ import (
 	"github.com/gobuffalo/pop"
 	"github.com/gobuffalo/uuid"
 	"github.com/gobuffalo/validate"
+	"github.com/gobuffalo/validate/validators"
 )
 
 // HazardType is a type of road hazard
@@ -36,15 +37,10 @@ func (h HazardTypes) String() string {
 // Validate gets run every time you call a "pop.Validate*" (pop.ValidateAndSave, pop.ValidateAndCreate, pop.ValidateAndUpdate) method.
 // This method is not required and may be deleted.
 func (h *HazardType) Validate(tx *pop.Connection) (*validate.Errors, error) {
-	errors := validate.NewErrors()
-
-	if "" == h.Label {
-		errors.Add("Label", "Label cannot be empty")
-	}
-
-	if "" == h.Description {
-		errors.Add("Description", "Description cannot be empty")
-	}
+	errors := validate.Validate(
+		&validators.StringIsPresent{Name: "Label", Field: h.Label, Message: "A label is required."},
+		&validators.StringIsPresent{Name: "Description", Field: h.Description, Message: "Please provide a brief description."},
+	)
 
 	return errors, nil
 }

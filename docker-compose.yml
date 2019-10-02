@@ -24,6 +24,8 @@ services:
     environment:
       POSTGRES_USER: schutzstreifen
       POSTGRES_PASSWORD: schutzstreifen
+    volumes:
+      - ./docker/volumes/db/:/var/lib/postgresql/data
 
   build:
     build: ./docker/images/build
@@ -32,7 +34,6 @@ services:
     volumes:
       - .:/schutzstreifen
       - gocache:/go
-      - ./docker/volumes/db/:/var/lib/postgresql/data
     working_dir: /schutzstreifen
     entrypoint: buffalo
 

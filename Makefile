@@ -3,6 +3,7 @@ docker = docker-compose -p $(project) -f docker-compose.yml
 build_run = $(docker) run --rm build
 buffalo_env ?= development
 build_arguments ?=
+task ?=
 
 setup: build-containers install-plugins reset-db migrate css
 
@@ -43,3 +44,6 @@ css:
 
 cli:
 	$(docker) exec app bash
+
+task:
+	$(docker) exec app buffalo task $(task)

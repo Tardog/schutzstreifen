@@ -12,4 +12,4 @@ schutzstreifen
 .vscode/
 .grifter/
 .env
-docker/volumes/postgresql/*
+docker/volumes/db/*

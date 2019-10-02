@@ -24,8 +24,9 @@ services:
     environment:
       POSTGRES_USER: schutzstreifen
       POSTGRES_PASSWORD: schutzstreifen
+      PGDATA: /var/lib/postgresql/data
     volumes:
-      - ./docker/volumes/db/:/var/lib/postgresql/data
+      - ./docker/volumes/db:/var/lib/postgresql/data
 
   build:
     build: ./docker/images/build

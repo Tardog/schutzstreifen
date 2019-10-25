@@ -151,13 +151,14 @@ func (as *ActionSuite) Test_UsersResource_Update() {
 	newName := "foobar"
 	newEmail := "foo@baz.bar"
 
-	user := &models.User{
-		Name:  newName,
-		Email: newEmail,
-	}
+	user := &models.User{}
+	as.DB.Find(user, id)
+
+	user.Name = newName
+	user.Email = newEmail
 
 	res := as.HTML("/users/" + id).Put(user)
-	as.Equal(200, res.Code)
+	as.Equal(302, res.Code)
 
 	updatedUser := &models.User{}
 	err = as.DB.Find(updatedUser, id)

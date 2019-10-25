@@ -1,0 +1,13 @@
+[[scenario]]
+name = "hazard types"
+
+  [[scenario.table]]
+    name = "hazard_types"
+
+    [[scenario.table.row]]
+      id = "0111a456-3e1d-482d-85c3-5eee7df8816e"
+      label = "No cycle lane"
+      description = "Cycling infrastructure is absent here."
+      created_at = "<%= now() %>"
+      updated_at = "<%= now() %>"
+

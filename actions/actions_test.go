@@ -5,6 +5,7 @@ import (
 
 	"github.com/gobuffalo/packr/v2"
 	"github.com/gobuffalo/suite"
+	"github.com/gofrs/uuid"
 )
 
 type ActionSuite struct {
@@ -21,4 +22,11 @@ func Test_ActionSuite(t *testing.T) {
 		Action: action,
 	}
 	suite.Run(t, as)
+}
+
+func (as *ActionSuite) AdminLogin() {
+	as.LoadFixture("users")
+
+	adminID, _ := uuid.FromString("a3e9c741-357b-495e-a376-54d4cdb6f7ac")
+	as.Session.Set("current_user_id", adminID)
 }

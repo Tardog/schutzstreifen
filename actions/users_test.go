@@ -8,13 +8,7 @@ import (
 
 // Test that existing users are displayed in the list
 func (as *ActionSuite) Test_UsersResource_List() {
-	as.LoadFixture("users")
-
-	admin := &models.User{}
-	err := as.DB.First(admin)
-	as.NoError(err)
-
-	as.Session.Set("current_user_id", admin.ID)
+	as.AdminLogin()
 
 	res := as.HTML("/users/").Get()
 	as.Equal(200, res.Code)
@@ -34,15 +28,9 @@ func (as *ActionSuite) Test_UsersResource_List() {
 
 // Test that an existing user can be displayed
 func (as *ActionSuite) Test_UsersResource_Show() {
-	as.LoadFixture("users")
+	as.AdminLogin()
 
-	admin := &models.User{}
-	err := as.DB.First(admin)
-	as.NoError(err)
-
-	as.Session.Set("current_user_id", admin.ID)
-
-	res := as.HTML("/users/" + admin.ID.String()).Get()
+	res := as.HTML("/users/a3e9c741-357b-495e-a376-54d4cdb6f7ac").Get()
 	as.Equal(200, res.Code)
 
 	body := res.Body.String()
@@ -52,13 +40,7 @@ func (as *ActionSuite) Test_UsersResource_Show() {
 
 // Test that the create user form can be rendered
 func (as *ActionSuite) Test_UsersResource_New() {
-	as.LoadFixture("users")
-
-	admin := &models.User{}
-	err := as.DB.First(admin)
-	as.NoError(err)
-
-	as.Session.Set("current_user_id", admin.ID)
+	as.AdminLogin()
 
 	res := as.HTML("/users/new").Get()
 	as.Equal(200, res.Code)
@@ -66,13 +48,7 @@ func (as *ActionSuite) Test_UsersResource_New() {
 
 // Test that a user is created with the values submitted by POST
 func (as *ActionSuite) Test_UsersResource_Create() {
-	as.LoadFixture("users")
-
-	admin := &models.User{}
-	err := as.DB.First(admin)
-	as.NoError(err)
-
-	as.Session.Set("current_user_id", admin.ID)
+	as.AdminLogin()
 
 	name := "foobar"
 	email := "foo@baz.bar"
@@ -88,7 +64,7 @@ func (as *ActionSuite) Test_UsersResource_Create() {
 	as.Equal(302, res.Code)
 
 	newUser := &models.User{}
-	err = as.DB.Last(newUser)
+	err := as.DB.Last(newUser)
 	as.NoError(err)
 
 	as.NotZero(newUser.ID)
@@ -99,13 +75,7 @@ func (as *ActionSuite) Test_UsersResource_Create() {
 
 // Test that empty values are rejected
 func (as *ActionSuite) Test_UsersResource_Create_Validation() {
-	as.LoadFixture("users")
-
-	admin := &models.User{}
-	err := as.DB.First(admin)
-	as.NoError(err)
-
-	as.Session.Set("current_user_id", admin.ID)
+	as.AdminLogin()
 
 	user := &models.User{
 		Name:     "",
@@ -119,13 +89,7 @@ func (as *ActionSuite) Test_UsersResource_Create_Validation() {
 
 // Test that the edit form renders with existing user data
 func (as *ActionSuite) Test_UsersResource_Edit() {
-	as.LoadFixture("users")
-
-	admin := &models.User{}
-	err := as.DB.First(admin)
-	as.NoError(err)
-
-	as.Session.Set("current_user_id", admin.ID)
+	as.AdminLogin()
 
 	res := as.HTML("/users/afd08b38-7b5d-4ca4-919d-2ec2f358c187/edit").Get()
 	as.Equal(200, res.Code)
@@ -139,13 +103,7 @@ func (as *ActionSuite) Test_UsersResource_Edit() {
 
 // Test that a user can be updated with new data
 func (as *ActionSuite) Test_UsersResource_Update() {
-	as.LoadFixture("users")
-
-	admin := &models.User{}
-	err := as.DB.First(admin)
-	as.NoError(err)
-
-	as.Session.Set("current_user_id", admin.ID)
+	as.AdminLogin()
 
 	id := "afd08b38-7b5d-4ca4-919d-2ec2f358c187"
 	newName := "foobar"
@@ -161,7 +119,7 @@ func (as *ActionSuite) Test_UsersResource_Update() {
 	as.Equal(302, res.Code)
 
 	updatedUser := &models.User{}
-	err = as.DB.Find(updatedUser, id)
+	err := as.DB.Find(updatedUser, id)
 	as.NoError(err)
 
 	fmt.Println(updatedUser)
@@ -174,19 +132,13 @@ func (as *ActionSuite) Test_UsersResource_Update() {
 
 // Test that a user can be deleted
 func (as *ActionSuite) Test_UsersResource_Destroy() {
-	as.LoadFixture("users")
-
-	admin := &models.User{}
-	err := as.DB.First(admin)
-	as.NoError(err)
-
-	as.Session.Set("current_user_id", admin.ID)
+	as.AdminLogin()
 
 	res := as.HTML("/users/afd08b38-7b5d-4ca4-919d-2ec2f358c187").Delete()
 	as.Equal(302, res.Code)
 
 	user := &models.User{}
-	err = as.DB.Find(user, "afd08b38-7b5d-4ca4-919d-2ec2f358c187")
+	err := as.DB.Find(user, "afd08b38-7b5d-4ca4-919d-2ec2f358c187")
 
 	as.Error(err)
 }

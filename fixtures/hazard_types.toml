@@ -11,3 +11,10 @@ name = "hazard types"
       created_at = "<%= now() %>"
       updated_at = "<%= now() %>"
 
+    [[scenario.table.row]]
+      id = "2111a456-3e1d-482d-85c3-5eee7df8816e"
+      label = "What is this?"
+      description = "I can't even"
+      created_at = "<%= now() %>"
+      updated_at = "<%= now() %>"
+

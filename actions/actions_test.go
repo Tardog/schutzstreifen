@@ -30,3 +30,10 @@ func (as *ActionSuite) AdminLogin() {
 	adminID, _ := uuid.FromString("a3e9c741-357b-495e-a376-54d4cdb6f7ac")
 	as.Session.Set("current_user_id", adminID)
 }
+
+func (as *ActionSuite) UserLogin() {
+	as.LoadFixture("users")
+
+	userID, _ := uuid.FromString("afd08b38-7b5d-4ca4-919d-2ec2f358c187")
+	as.Session.Set("current_user_id", userID)
+}

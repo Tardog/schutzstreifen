@@ -4,6 +4,7 @@ build_run = $(docker) run --rm build
 buffalo_env ?= development
 build_arguments ?=
 task ?=
+test_args ?=
 
 setup: build-containers install-plugins reset-db migrate css
 
@@ -37,7 +38,7 @@ build-containers:
 	$(docker) -f docker-compose.yml build $(build_arguments)
 
 test:
-	-$(build_run) test
+	$(build_run) test $(test_args)
 
 css:
 	$(docker) run --rm --entrypoint sassc build -t compressed public/assets/scss/application.scss public/assets/application.css

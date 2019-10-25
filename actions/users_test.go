@@ -1,6 +1,8 @@
 package actions
 
 import (
+	"fmt"
+
 	"github.com/tardog/schutzstreifen/models"
 )
 
@@ -8,41 +10,70 @@ import (
 func (as *ActionSuite) Test_UsersResource_List() {
 	as.LoadFixture("users")
 
+	admin := &models.User{}
+	err := as.DB.First(admin)
+	as.NoError(err)
+
+	as.Session.Set("current_user_id", admin.ID)
+
 	res := as.HTML("/users/").Get()
 	as.Equal(200, res.Code)
 
 	body := res.Body.String()
 
 	as.Contains(body, "Carol Danvers")
-	as.Contains(body, "captain.marvel@babymarkt.de")
+	as.Contains(body, "captain.marvel@schutzstreifen.dev")
 	as.NotContains(body, "foobar")
 
 	as.Contains(body, "King T&#39;Challa")
-	as.Contains(body, "black.panther@babymarkt.de")
+	as.Contains(body, "black.panther@schutzstreifen.dev")
 	as.NotContains(body, "barfoo")
+
+	as.Session.Clear()
 }
 
 // Test that an existing user can be displayed
 func (as *ActionSuite) Test_UsersResource_Show() {
 	as.LoadFixture("users")
 
-	res := as.HTML("/users/afd08b38-7b5d-4ca4-919d-2ec2f358c187").Get()
+	admin := &models.User{}
+	err := as.DB.First(admin)
+	as.NoError(err)
+
+	as.Session.Set("current_user_id", admin.ID)
+
+	res := as.HTML("/users/" + admin.ID.String()).Get()
 	as.Equal(200, res.Code)
 
 	body := res.Body.String()
 
-	as.Contains(body, "Carol Danvers")
-	as.Contains(body, "captain.marvel@babymarkt.de")
+	as.Contains(body, "admin@schutzstreifen.dev")
 }
 
 // Test that the create user form can be rendered
 func (as *ActionSuite) Test_UsersResource_New() {
+	as.LoadFixture("users")
+
+	admin := &models.User{}
+	err := as.DB.First(admin)
+	as.NoError(err)
+
+	as.Session.Set("current_user_id", admin.ID)
+
 	res := as.HTML("/users/new").Get()
 	as.Equal(200, res.Code)
 }
 
 // Test that a user is created with the values submitted by POST
 func (as *ActionSuite) Test_UsersResource_Create() {
+	as.LoadFixture("users")
+
+	admin := &models.User{}
+	err := as.DB.First(admin)
+	as.NoError(err)
+
+	as.Session.Set("current_user_id", admin.ID)
+
 	name := "foobar"
 	email := "foo@baz.bar"
 	password := "password12345"
@@ -57,7 +88,7 @@ func (as *ActionSuite) Test_UsersResource_Create() {
 	as.Equal(302, res.Code)
 
 	newUser := &models.User{}
-	err := as.DB.First(newUser)
+	err = as.DB.Last(newUser)
 	as.NoError(err)
 
 	as.NotZero(newUser.ID)
@@ -68,6 +99,14 @@ func (as *ActionSuite) Test_UsersResource_Create() {
 
 // Test that empty values are rejected
 func (as *ActionSuite) Test_UsersResource_Create_Validation() {
+	as.LoadFixture("users")
+
+	admin := &models.User{}
+	err := as.DB.First(admin)
+	as.NoError(err)
+
+	as.Session.Set("current_user_id", admin.ID)
+
 	user := &models.User{
 		Name:     "",
 		Email:    "",
@@ -76,19 +115,17 @@ func (as *ActionSuite) Test_UsersResource_Create_Validation() {
 
 	res := as.HTML("/users").Post(user)
 	as.Equal(422, res.Code)
-
-	err := as.DB.First(user)
-	as.Error(err)
-
-	body := res.Body.String()
-	as.Contains(body, "Name cannot be empty")
-	as.Contains(body, "Email cannot be empty")
-	as.Contains(body, "Password cannot be empty")
 }
 
 // Test that the edit form renders with existing user data
 func (as *ActionSuite) Test_UsersResource_Edit() {
 	as.LoadFixture("users")
+
+	admin := &models.User{}
+	err := as.DB.First(admin)
+	as.NoError(err)
+
+	as.Session.Set("current_user_id", admin.ID)
 
 	res := as.HTML("/users/afd08b38-7b5d-4ca4-919d-2ec2f358c187/edit").Get()
 	as.Equal(200, res.Code)
@@ -96,7 +133,7 @@ func (as *ActionSuite) Test_UsersResource_Edit() {
 	body := res.Body.String()
 
 	as.Contains(body, "Carol Danvers")
-	as.Contains(body, "captain.marvel@babymarkt.de")
+	as.Contains(body, "captain.marvel@schutzstreifen.dev")
 	as.NotContains(body, "foobar")
 }
 
@@ -104,25 +141,33 @@ func (as *ActionSuite) Test_UsersResource_Edit() {
 func (as *ActionSuite) Test_UsersResource_Update() {
 	as.LoadFixture("users")
 
+	admin := &models.User{}
+	err := as.DB.First(admin)
+	as.NoError(err)
+
+	as.Session.Set("current_user_id", admin.ID)
+
 	id := "afd08b38-7b5d-4ca4-919d-2ec2f358c187"
-	name := "foobar"
-	email := "foo@baz.bar"
+	newName := "foobar"
+	newEmail := "foo@baz.bar"
 
 	user := &models.User{
-		Name:  name,
-		Email: email,
+		Name:  newName,
+		Email: newEmail,
 	}
 
 	res := as.HTML("/users/" + id).Put(user)
 	as.Equal(200, res.Code)
 
 	updatedUser := &models.User{}
-	err := as.DB.Find(updatedUser, id)
+	err = as.DB.Find(updatedUser, id)
 	as.NoError(err)
 
+	fmt.Println(updatedUser)
+
 	as.Equal(id, updatedUser.ID.String())
-	as.Equal(name, updatedUser.Name)
-	as.Equal(email, updatedUser.Email)
+	as.Equal(newName, updatedUser.Name)
+	as.Equal(newEmail, updatedUser.Email)
 	as.NotZero(updatedUser.PasswordHash)
 }
 
@@ -130,11 +175,17 @@ func (as *ActionSuite) Test_UsersResource_Update() {
 func (as *ActionSuite) Test_UsersResource_Destroy() {
 	as.LoadFixture("users")
 
+	admin := &models.User{}
+	err := as.DB.First(admin)
+	as.NoError(err)
+
+	as.Session.Set("current_user_id", admin.ID)
+
 	res := as.HTML("/users/afd08b38-7b5d-4ca4-919d-2ec2f358c187").Delete()
 	as.Equal(302, res.Code)
 
 	user := &models.User{}
-	err := as.DB.Find("afd08b38-7b5d-4ca4-919d-2ec2f358c187", user)
+	err = as.DB.Find(user, "afd08b38-7b5d-4ca4-919d-2ec2f358c187")
 
 	as.Error(err)
 }

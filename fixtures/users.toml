@@ -5,17 +5,28 @@ name = "users"
     name = "users"
 
     [[scenario.table.row]]
+      id = "a3e9c741-357b-495e-a376-54d4cdb6f7ac"
+      name = "Admin"
+      email = "admin@schutzstreifen.dev"
+      password = "powerfoo"
+      admin = true
+      created_at = "<%= now() %>"
+      updated_at = "<%= now() %>"
+
+    [[scenario.table.row]]
       id = "afd08b38-7b5d-4ca4-919d-2ec2f358c187"
       name = "Carol Danvers"
-      email = "captain.marvel@babymarkt.de"
+      email = "captain.marvel@schutzstreifen.dev"
       password = "foobar"
+      admin = false
       created_at = "<%= now() %>"
       updated_at = "<%= now() %>"
 
     [[scenario.table.row]]
       id = "d50dda02-f887-42dc-97e0-c33350767ce6"
       name = "King T'Challa"
-      email = "black.panther@babymarkt.de"
+      email = "black.panther@schutzstreifen.dev"
       password = "barfoo"
+      admin = false
       created_at = "<%= now() %>"
       updated_at = "<%= now() %>"

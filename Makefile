@@ -46,4 +46,4 @@ cli:
 	$(docker) exec app bash
 
 task:
-	$(docker) exec app buffalo task $(task)
+	$(build_run) task $(task)

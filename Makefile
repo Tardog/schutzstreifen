@@ -42,8 +42,8 @@ test:
 css:
 	$(docker) run --rm --entrypoint sassc build -t compressed public/assets/scss/application.scss public/assets/application.css
 
-cli:
+cli: start
 	$(docker) exec app bash
 
-task:
+task: start
 	$(docker) exec app buffalo task $(task)

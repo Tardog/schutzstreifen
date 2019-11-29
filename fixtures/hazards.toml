@@ -16,3 +16,15 @@ name = "hazards"
       created_at = "<%= now() %>"
       updated_at = "<%= now() %>"
 
+    [[scenario.table.row]]
+      id = "2222a456-3e1d-482d-85c3-5eee7df8816f"
+      label = "Ninjas"
+      description = "This hazard is invisible!"
+      lat = 2.5559
+      lon = 49.0083
+      visible = false
+      user_id = "afd08b38-7b5d-4ca4-919d-2ec2f358c187"
+      hazard_type_id = "0111a456-3e1d-482d-85c3-5eee7df8816e"
+      created_at = "<%= now() %>"
+      updated_at = "<%= now() %>"
+
